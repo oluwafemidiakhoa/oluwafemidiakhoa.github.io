@@ -268,6 +268,7 @@ activate ~ Bernoulli(p)
           <p class="muted">By emulating Drosera's strategy, Sundew prioritizes high-value events while minimizing background compute, delivering substantial energy savings.</p>
           <h3 style="margin-top:16px">Publication</h3>
           <p class="muted">A full whitepaper and benchmarks are in preparation. Interested collaborators are invited to reach out.</p>
+          <p><a href="assets/best_by_counts.md">Best MIT-BIH configs (Markdown)</a> · <a href="assets/2025-09-ecg-mitbih.md">Research update</a></p>
         </div>
         <aside class="metrics fade" aria-label="Performance metrics">
           <h3 style="margin-bottom:10px">Performance (synthetic)</h3>
@@ -372,7 +373,6 @@ activate ~ Bernoulli(p)
         const id=a.getAttribute('href'); if(id.length<2) return;
         const el=document.querySelector(id); if(!el) return;
         e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'});
-        history.pushState(null,'',id);
       });
     });
 
