@@ -46,7 +46,7 @@
     .title { font-size: 40px; line-height: 1.1; margin: 0 0 12px; letter-spacing: 0.3px; }
     .tag { color: var(--muted); font-size: 18px; margin: 0 0 16px; }
     .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 20px; }
-    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
     .btn {
       background: linear-gradient(180deg, #64f0b5, #3fc98f);
       color: #0b261b;
@@ -59,6 +59,7 @@
     pre.code {
       background: #0e1318; border: 1px solid #202730; border-radius: 12px;
       padding: 14px; overflow: auto; font-family: var(--mono); font-size: 14px; color: #dce7f2;
+      margin: 0;
     }
     .hero-img {
       background: #0f1419; border: 1px solid #232a33; border-radius: var(--radius);
@@ -102,10 +103,37 @@
       font-size: 12px; padding: 4px 8px; border-radius: 999px; background: #1a212a; border: 1px solid #2a323b; color: #cfe6ff;
     }
 
+    /* Copy button for code blocks */
+    .code-container {
+      position: relative;
+      margin: 8px 0;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 12px;
+      padding: 6px 10px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.2s;
+    }
+    .code-container:hover .copy-btn {
+      opacity: 1;
+    }
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
     /* Footer */
     footer { color: var(--muted); padding: 36px 0 60px; text-align: center; }
     @media (max-width: 860px) {
       .hero-inner { grid-template-columns: 1fr; }
+      .col-6 { grid-column: span 12; }
     }
   </style>
 </head>
@@ -125,16 +153,22 @@
           <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/actions" target="_blank" rel="noopener">
             <img alt="CI" src="https://github.com/oluwafemidiakhoa/sundew_algorithms/workflows/CI/badge.svg" />
           </a>
-          <a href="https://opensource.org/licenses/Apache-2.0" target="_blank" rel="noopener">
-            <img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" />
+          <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">
+            <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
           </a>
         </div>
 
         <div class="panel" style="margin: 10px 0 14px">
           <div class="muted" style="margin-bottom:6px">Install</div>
-          <pre class="code">pip install -U sundew-algorithms</pre>
+          <div class="code-container">
+            <pre class="code">pip install -U sundew-algorithms</pre>
+            <button class="copy-btn" onclick="copyToClipboard('pip install -U sundew-algorithms', this)">Copy</button>
+          </div>
           <div class="muted" style="margin:8px 0 6px">Quickstart</div>
-          <pre class="code">python -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"</pre>
+          <div class="code-container">
+            <pre class="code">python -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"</pre>
+            <button class="copy-btn" onclick="copyToClipboard('python -m sundew --demo --events 50 --temperature 0.08 --save \"%USERPROFILE%\\Downloads\\demo_run.json\"', this)">Copy</button>
+          </div>
           <div class="cta">
             <a class="btn" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">View on PyPI</a>
             <a class="btn secondary" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">Source on GitHub</a>
@@ -156,15 +190,50 @@
         <div class="col-12 panel">
           <h2 class="h2">What is Sundew?</h2>
           <p>
-            Sundew is an adaptive gating algorithm inspired by the sundew plant: it decides
+            Sundew is an adaptive gating algorithm inspired by the carnivorous sundew plant: it decides
             when to fully process an input and when to skip, trading a tiny accuracy drop for
             large energy savings. It tunes its threshold online using a lightweight PI controller,
-            respects an energy budget, and supports “soft” logistic gating via temperature.
+            respects an energy budget, and supports "soft" logistic gating via temperature.
           </p>
           <p class="muted">
             Ideal for edge devices, streaming analytics, and any scenario where every millijoule
-            or CPU cycle matters.
+            or CPU cycle matters. Perfect for wearables, IoT sensors, and battery-powered AI systems.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY METRICS -->
+    <section>
+      <div class="grid">
+        <div class="col-12 panel">
+          <h2 class="h2">Key Results (MIT-BIH ECG, 50k samples)</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin-top: 16px;">
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">0.103</div>
+              <div class="muted" style="font-size: 14px;">Activation rate</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">85.45%</div>
+              <div class="muted" style="font-size: 14px;">Energy savings</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">530,000</div>
+              <div class="muted" style="font-size: 14px;">Baseline cost</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">77,106</div>
+              <div class="muted" style="font-size: 14px;">Actual cost</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">0.683</div>
+              <div class="muted" style="font-size: 14px;">Final threshold</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">89.6</div>
+              <div class="muted" style="font-size: 14px;">Energy remaining</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -187,6 +256,96 @@
         <div class="col-6 panel">
           <h3 class="h2">Pareto Frontier</h3>
           <img src="/assets/pareto_frontier.png" alt="Pareto frontier" style="width:100%; border-radius:10px;" />
+        </div>
+      </div>
+    </section>
+
+    <!-- API EXAMPLE -->
+    <section>
+      <div class="grid">
+        <div class="col-12 panel">
+          <h2 class="h2">Quick API Example</h2>
+          <div class="code-container">
+            <pre class="code">from sundew import SundewAlgorithm
+from sundew.config import SundewConfig
+
+cfg = SundewConfig(
+    activation_threshold=0.78, 
+    target_activation_rate=0.15,
+    gate_temperature=0.08, 
+    max_threshold=0.92, 
+    energy_pressure=0.04
+)
+algo = SundewAlgorithm(cfg)
+
+# Process a sample input
+x = {
+    "magnitude": 63, 
+    "anomaly_score": 0.52, 
+    "context_relevance": 0.31, 
+    "urgency": 0.18
+}
+result = algo.process(x)
+print(result or "Skipped (gate dormant)")
+print(algo.report())  # Get energy/activation metrics</pre>
+            <button class="copy-btn" onclick="copyToClipboard(`from sundew import SundewAlgorithm
+from sundew.config import SundewConfig
+
+cfg = SundewConfig(
+    activation_threshold=0.78, 
+    target_activation_rate=0.15,
+    gate_temperature=0.08, 
+    max_threshold=0.92, 
+    energy_pressure=0.04
+)
+algo = SundewAlgorithm(cfg)
+
+# Process a sample input
+x = {
+    \"magnitude\": 63, 
+    \"anomaly_score\": 0.52, 
+    \"context_relevance\": 0.31, 
+    \"urgency\": 0.18
+}
+result = algo.process(x)
+print(result or \"Skipped (gate dormant)\")
+print(algo.report())  # Get energy/activation metrics`, this)">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENCHMARK REPRODUCTION -->
+    <section>
+      <div class="grid">
+        <div class="col-12 panel">
+          <h2 class="h2">Reproduce the ECG Benchmark</h2>
+          <p>Run the exact command that generated our published results:</p>
+          <div class="code-container">
+            <pre class="code">py -3.13 -m benchmarks.bench_ecg_from_csv \
+  --csv "data\MIT-BIH Arrhythmia Database.csv" \
+  --limit 50000 \
+  --activation-threshold 0.70 \
+  --target-rate 0.12 \
+  --gate-temperature 0.07 \
+  --energy-pressure 0.04 \
+  --max-threshold 0.92 \
+  --refractory 0 \
+  --save results\ecg_bench_50000.json</pre>
+            <button class="copy-btn" onclick="copyToClipboard(`py -3.13 -m benchmarks.bench_ecg_from_csv \\
+  --csv \"data\\MIT-BIH Arrhythmia Database.csv\" \\
+  --limit 50000 \\
+  --activation-threshold 0.70 \\
+  --target-rate 0.12 \\
+  --gate-temperature 0.07 \\
+  --energy-pressure 0.04 \\
+  --max-threshold 0.92 \\
+  --refractory 0 \\
+  --save results\\ecg_bench_50000.json`, this)">Copy</button>
+          </div>
+          <p class="muted" style="margin-top: 12px;">
+            Dataset ref: Moody & Mark, IEEE EMBS 2001. CSV schema auto-detected (signal/label fallbacks).
+          </p>
         </div>
       </div>
     </section>
@@ -218,12 +377,28 @@
 
   <footer>
     <div class="wrap">
-      <div>© 2025 Oluwafemi Idiakhoa — Apache-2.0.</div>
+      <div>© 2025 Oluwafemi Idiakhoa — MIT License.</div>
       <div class="muted">This is research software; not a medical device.</div>
     </div>
   </footer>
 
   <script>
+    // Copy to clipboard functionality
+    async function copyToClipboard(text, button) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const originalText = button.textContent;
+        button.textContent = 'Copied✓';
+        button.style.background = 'rgba(80, 227, 164, 0.3)';
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = 'rgba(255, 255, 255, 0.1)';
+        }, 1200);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
+    }
+
     // Dynamically list /assets using the GitHub Contents API
     // Works on public repos without auth (subject to rate limits).
     const owner = "oluwafemidiakhoa";
