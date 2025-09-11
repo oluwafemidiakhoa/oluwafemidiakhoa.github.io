@@ -1,671 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sundew Algorithms - Bio-inspired Energy-aware Selective Activation</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <title>Sundew Algorithms — Bio-inspired, energy-aware selective activation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Sundew Algorithms: bio-inspired, energy-aware selective activation for streaming data. Benchmarks, figures, and assets."
+  />
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
-            color: #f1f5f9;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
+  <!-- Favicon & Social preview -->
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="Sundew Algorithms" />
+  <meta property="og:description" content="Bio-inspired, energy-aware selective activation for streaming data." />
+  <meta property="og:image" content="https://oluwafemidiakhoa.github.io/assets/og-card.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #12161b;
+      --muted: #7d8a98;
+      --text: #e6edf3;
+      --brand: #50e3a4;   /* sundew green */
+      --accent: #82b1ff;  /* soft blue accent */
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--sans); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
 
-        /* Header */
-        header {
-            padding: 56px 0 48px;
-        }
+    /* Hero */
+    .hero {
+      background: radial-gradient(1200px 500px at 10% -10%, rgba(80, 227, 164, 0.15), transparent),
+                  radial-gradient(900px 400px at 100% 0%, rgba(130,177,255,0.16), transparent);
+      border-bottom: 1px solid #20242a;
+    }
+    .hero-inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center; }
+    .title { font-size: 40px; line-height: 1.1; margin: 0 0 12px; letter-spacing: 0.3px; }
+    .tag { color: var(--muted); font-size: 18px; margin: 0 0 16px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 20px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      background: linear-gradient(180deg, #64f0b5, #3fc98f);
+      color: #0b261b;
+      padding: 12px 16px; border-radius: 12px; font-weight: 700; box-shadow: var(--shadow);
+      border: 0; cursor: pointer;
+    }
+    .btn.secondary {
+      background: #1a212a; color: var(--text); border: 1px solid #2a323b;
+    }
+    pre.code {
+      background: #0e1318; border: 1px solid #202730; border-radius: 12px;
+      padding: 14px; overflow: auto; font-family: var(--mono); font-size: 14px; color: #dce7f2;
+    }
+    .hero-img {
+      background: #0f1419; border: 1px solid #232a33; border-radius: var(--radius);
+      padding: 8px; box-shadow: var(--shadow);
+    }
+    .hero-img img { width: 100%; border-radius: 10px; display: block; }
 
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
+    /* Sections */
+    section { padding: 44px 0; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid #1e242c;
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .col-6 { grid-column: span 6; }
+    .col-12 { grid-column: span 12; }
+    .h2 { font-size: 26px; margin: 0 0 10px; }
+    .muted { color: var(--muted); }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.025em;
-        }
+    /* Gallery / assets */
+    .assets {
+      display: grid; gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    .asset {
+      background: #0f1419; border: 1px solid #222933; border-radius: 12px;
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .asset-thumb { aspect-ratio: 16/10; display: grid; place-items: center; background: #0c1116; }
+    .asset-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .asset-body { padding: 10px 12px; }
+    .asset-title { font-size: 14px; margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .asset-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip {
+      font-size: 12px; padding: 4px 8px; border-radius: 999px; background: #1a212a; border: 1px solid #2a323b; color: #cfe6ff;
+    }
 
-        .badges {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            font-size: 12px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-        }
-
-        .hero-title {
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 16px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #a7c7e7, #7dd3fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 768px;
-            margin-bottom: 32px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            padding: 8px 16px;
-            background: rgba(99, 102, 241, 0.9);
-            color: white;
-            text-decoration: none;
-            border-radius: 16px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .btn-primary:hover {
-            background: rgba(129, 140, 248, 0.9);
-        }
-
-        .btn-secondary {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            text-decoration: none;
-            border-radius: 16px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin: 48px 0;
-        }
-
-        @media (min-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(6, 1fr);
-            }
-            .hero-title {
-                font-size: 64px;
-            }
-        }
-
-        .stat-card {
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 600;
-            color: white;
-            margin-top: 4px;
-            letter-spacing: -0.025em;
-        }
-
-        .stat-hint {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-top: 4px;
-        }
-
-        /* Content Sections */
-        .section {
-            margin-top: 48px;
-        }
-
-        .grid-2 {
-            display: grid;
-            gap: 24px;
-        }
-
-        @media (min-width: 768px) {
-            .grid-2 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .grid-2.lg-cols-2 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .card {
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-        }
-
-        .card h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .card p {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 16px;
-        }
-
-        /* Code Blocks */
-        .code-container {
-            position: relative;
-            margin-top: 16px;
-        }
-
-        .code-block {
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 16px;
-            padding: 16px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 14px;
-            color: white;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        .code-block.small {
-            font-size: 12px;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            padding: 6px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 12px;
-            cursor: pointer;
-            opacity: 0;
-            transition: all 0.2s;
-        }
-
-        .code-container:hover .copy-btn {
-            opacity: 1;
-        }
-
-        .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Chart */
-        .chart-container {
-            max-width: 384px;
-            margin: 0 auto;
-        }
-
-        .chart-title {
-            text-align: center;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 12px;
-        }
-
-        .bars-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-
-        .bar-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .bar-label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 8px;
-        }
-
-        .bar-container {
-            width: 80px;
-            height: 192px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 4px;
-            display: flex;
-            align-items: flex-end;
-        }
-
-        .bar {
-            width: 100%;
-            border-radius: 8px;
-            min-height: 6px;
-            transition: height 0.3s ease;
-        }
-
-        .bar.sky {
-            background: #38bdf8;
-        }
-
-        .bar.emerald {
-            background: #34d399;
-        }
-
-        .bar-value {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 8px;
-        }
-
-        .chart-summary {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 16px;
-        }
-
-        .chart-summary .highlight {
-            font-weight: 600;
-        }
-
-        /* API Cheatsheet */
-        .api-list {
-            list-style: disc;
-            padding-left: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-        }
-
-        .api-list li {
-            margin-bottom: 8px;
-        }
-
-        .api-list code {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        /* Presets */
-        .presets-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .presets-grid {
-                grid-template-columns: repeat(6, 1fr);
-            }
-        }
-
-        /* Benchmark Layout */
-        .benchmark-content {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        @media (min-width: 768px) {
-            .benchmark-content {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-        }
-
-        .benchmark-text {
-            max-width: 640px;
-        }
-
-        .benchmark-note {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-top: 12px;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: 64px;
-            padding-bottom: 64px;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            justify-content: space-between;
-        }
-
-        @media (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                align-items: center;
-            }
-        }
-
-        .footer-info {
-            font-weight: 600;
-        }
-
-        .footer-disclaimer {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .footer-link {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .footer-link:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-    </style>
+    /* Footer */
+    footer { color: var(--muted); padding: 36px 0 60px; text-align: center; }
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Hero -->
-        <header>
-            <div class="header-top">
-                <h1 class="logo">Sundew Algorithms</h1>
-                <div class="badges">
-                    <span class="badge">PyPI · v0.1.28</span>
-                    <span class="badge">MIT License</span>
-                    <span class="badge">Edge-ready</span>
-                </div>
-            </div>
-            
-            <h2 class="hero-title">
-                Bio‑inspired, energy‑aware <span class="gradient-text">selective activation</span> for streaming data
-            </h2>
-            
-            <p class="hero-subtitle">
-                Decide when to fully process an input and when to skip. Sustain accuracy while
-                slashing compute, heat, and battery drain—perfect for wearables and edge AI.
-            </p>
 
-            <div class="hero-buttons">
-                <a href="https://pypi.org/project/sundew-algorithms/" class="btn-primary">
-                    Install from PyPI
-                </a>
-                <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms" class="btn-secondary">
-                    View on GitHub
-                </a>
-            </div>
-        </header>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <h1 class="title">Sundew Algorithms</h1>
+        <p class="tag">Bio-inspired, energy-aware selective activation for streaming data.</p>
 
-        <!-- KPI Strip -->
-        <section class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Activation rate</div>
-                <div class="stat-value">0.103</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Estimated savings</div>
-                <div class="stat-value">85.45%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Baseline cost</div>
-                <div class="stat-value">530,000</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Actual cost</div>
-                <div class="stat-value">77,106</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Final threshold</div>
-                <div class="stat-value">0.683</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Energy left</div>
-                <div class="stat-value">89.6</div>
-                <div class="stat-hint">(arbitrary units)</div>
-            </div>
-        </section>
+        <div class="badges">
+          <a href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">
+            <img alt="PyPI" src="https://badge.fury.io/py/sundew-algorithms.svg" />
+          </a>
+          <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/actions" target="_blank" rel="noopener">
+            <img alt="CI" src="https://github.com/oluwafemidiakhoa/sundew_algorithms/workflows/CI/badge.svg" />
+          </a>
+          <a href="https://opensource.org/licenses/Apache-2.0" target="_blank" rel="noopener">
+            <img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" />
+          </a>
+        </div>
 
-        <!-- Install & Demo -->
-        <section class="section">
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Install</h3>
-                    <p>One line to get started.</p>
-                    <div class="code-container">
-                        <div class="code-block">pip install -U sundew-algorithms</div>
-                        <button class="copy-btn" onclick="copyToClipboard('pip install -U sundew-algorithms', this)">Copy</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>Run the CLI demo</h3>
-                    <p>Interactive demo with a final energy report.</p>
-                    <div class="code-container">
-                        <div class="code-block">py -3.13 -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"</div>
-                        <button class="copy-btn" onclick="copyToClipboard('py -3.13 -m sundew --demo --events 50 --temperature 0.08 --save \"%USERPROFILE%\\Downloads\\demo_run.json\"', this)">Copy</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="panel" style="margin: 10px 0 14px">
+          <div class="muted" style="margin-bottom:6px">Install</div>
+          <pre class="code">pip install -U sundew-algorithms</pre>
+          <div class="muted" style="margin:8px 0 6px">Quickstart</div>
+          <pre class="code">python -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"</pre>
+          <div class="cta">
+            <a class="btn" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">View on PyPI</a>
+            <a class="btn secondary" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">Source on GitHub</a>
+          </div>
+        </div>
+      </div>
 
-        <!-- Minimal API & Cheatsheet -->
-        <section class="section">
-            <div class="grid-2 lg-cols-2">
-                <div class="card">
-                    <h3>Minimal API</h3>
-                    <p>Drop‑in gate with smart energy control.</p>
-                    <div class="code-container">
-                        <div class="code-block">from sundew import SundewAlgorithm
-from sundew.config import SundewConfig
-
-cfg = SundewConfig(activation_threshold=0.78, target_activation_rate=0.15,
-                   gate_temperature=0.08, max_threshold=0.92, energy_pressure=0.04)
-algo = SundewAlgorithm(cfg)
-
-x = {"magnitude": 63, "anomaly_score": 0.52, "context_relevance": 0.31, "urgency": 0.18}
-res = algo.process(x)
-print(res or "Skipped")
-print(algo.report())</div>
-                        <button class="copy-btn" onclick="copyToClipboard(`from sundew import SundewAlgorithm
-from sundew.config import SundewConfig
-
-cfg = SundewConfig(activation_threshold=0.78, target_activation_rate=0.15,
-                   gate_temperature=0.08, max_threshold=0.92, energy_pressure=0.04)
-algo = SundewAlgorithm(cfg)
-
-x = {\"magnitude\": 63, \"anomaly_score\": 0.52, \"context_relevance\": 0.31, \"urgency\": 0.18}
-res = algo.process(x)
-print(res or \"Skipped\")
-print(algo.report())`, this)">Copy</button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>API cheatsheet</h3>
-                    <ul class="api-list">
-                        <li><code>SundewConfig</code>: all knobs; call <code>validate()</code> for sanity checks.</li>
-                        <li><code>SundewAlgorithm(cfg)</code>: gate/controller instance.</li>
-                        <li><code>algo.process(x)</code> → <code>ProcessingResult | None</code>.</li>
-                        <li><code>algo.report()</code> → metrics dict.</li>
-                        <li>Input keys: <code>magnitude</code> (0–100), <code>anomaly_score</code>, <code>context_relevance</code>, <code>urgency</code> ∈ [0,1].</li>
-                        <li>Useful knobs: <code>target_activation_rate</code>, <code>gate_temperature</code>, <code>max_threshold</code>, <code>energy_pressure</code>, <code>probe_every</code>, <code>refractory</code>.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Benchmark -->
-        <section class="section">
-            <div class="card">
-                <div class="benchmark-content">
-                    <div class="benchmark-text">
-                        <h3>ECG benchmark</h3>
-                        <p>
-                            Reproduce our public numbers on an MIT‑BIH CSV export. The example below matches the run
-                            you verified locally (~85% energy savings at ~10% activation).
-                        </p>
-                        <div class="code-container">
-                            <div class="code-block">py -3.13 -m benchmarks.bench_ecg_from_csv \
-  --csv "data\MIT-BIH Arrhythmia Database.csv" \
-  --limit 50000 \
-  --activation-threshold 0.70 \
-  --target-rate 0.12 \
-  --gate-temperature 0.07 \
-  --energy-pressure 0.04 \
-  --max-threshold 0.92 \
-  --refractory 0 \
-  --save results\ecg_bench_50000.json</div>
-                            <button class="copy-btn" onclick="copyToClipboard(`py -3.13 -m benchmarks.bench_ecg_from_csv \\
-  --csv \"data\\MIT-BIH Arrhythmia Database.csv\" \\
-  --limit 50000 \\
-  --activation-threshold 0.70 \\
-  --target-rate 0.12 \\
-  --gate-temperature 0.07 \\
-  --energy-pressure 0.04 \\
-  --max-threshold 0.92 \\
-  --refractory 0 \\
-  --save results\\ecg_bench_50000.json`, this)">Copy</button>
-                        </div>
-                        <p class="benchmark-note">
-                            Dataset ref: Moody & Mark, IEEE EMBS 2001. CSV schema auto‑detected (signal/label fallbacks).
-                        </p>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-title">Energy cost (lower is better)</div>
-                        <div class="bars-grid">
-                            <div class="bar-item">
-                                <div class="bar-label">Baseline</div>
-                                <div class="bar-container">
-                                    <div class="bar sky" style="height: 100%;"></div>
-                                </div>
-                                <div class="bar-value">530,000</div>
-                            </div>
-                            <div class="bar-item">
-                                <div class="bar-label">Actual</div>
-                                <div class="bar-container">
-                                    <div class="bar emerald" style="height: 14.5%;"></div>
-                                </div>
-                                <div class="bar-value">77,106</div>
-                            </div>
-                        </div>
-                        <div class="chart-summary">
-                            Savings ≈ <span class="highlight">85.45%</span> · Activation ≈ 0.103
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Presets -->
-        <section class="section">
-            <div class="card">
-                <h3>Presets</h3>
-                <p>Curated starting points you can override at call‑site.</p>
-                <div class="presets-grid">
-                    <span class="badge">tuned_v2 (recommended)</span>
-                    <span class="badge">ecg_v1</span>
-                    <span class="badge">ecg_mitbih_best</span>
-                    <span class="badge">aggressive</span>
-                    <span class="badge">conservative</span>
-                    <span class="badge">energy_saver</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <div class="card">
-                <div class="footer-content">
-                    <div>
-                        <div class="footer-info">MIT License • Research prototype</div>
-                        <div class="footer-disclaimer">
-                            Not a medical device; not for diagnosis.
-                        </div>
-                    </div>
-                    <div class="footer-links">
-                        <a class="footer-link" href="https://pypi.org/project/sundew-algorithms/">PyPI</a>
-                        <a class="footer-link" href="https://github.com/oluwafemidiakhoa/sundew_algorithms">GitHub</a>
-                        <a class="footer-link" href="https://github.com/oluwafemidiakhoa/sundew_algorithms#readme">Docs (README)</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+      <div class="hero-img">
+        <!-- Your headline bench figure -->
+        <img src="/assets/ecg_bench_50000.png" alt="ECG benchmark bar chart (baseline vs actual energy cost)">
+      </div>
     </div>
+  </header>
 
-    <script>
-        async function copyToClipboard(text, button) {
-            try {
-                await navigator.clipboard.writeText(text);
-                const originalText = button.textContent;
-                button.textContent = 'Copied✓';
-                button.style.background = 'rgba(34, 197, 94, 0.3)';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.style.background = 'rgba(255, 255, 255, 0.1)';
-                }, 1200);
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-            }
+  <main class="wrap">
+    <!-- WHAT IS SUNDEW -->
+    <section>
+      <div class="grid">
+        <div class="col-12 panel">
+          <h2 class="h2">What is Sundew?</h2>
+          <p>
+            Sundew is an adaptive gating algorithm inspired by the sundew plant: it decides
+            when to fully process an input and when to skip, trading a tiny accuracy drop for
+            large energy savings. It tunes its threshold online using a lightweight PI controller,
+            respects an energy budget, and supports “soft” logistic gating via temperature.
+          </p>
+          <p class="muted">
+            Ideal for edge devices, streaming analytics, and any scenario where every millijoule
+            or CPU cycle matters.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY PLOTS -->
+    <section>
+      <div class="grid">
+        <div class="col-6 panel">
+          <h3 class="h2">Precision–Recall</h3>
+          <img src="/assets/precision_recall.png" alt="Precision vs Recall" style="width:100%; border-radius:10px;" />
+        </div>
+        <div class="col-6 panel">
+          <h3 class="h2">Activation rate vs F1</h3>
+          <img src="/assets/f1_and_rate.png" alt="Activation rate vs F1" style="width:100%; border-radius:10px;" />
+        </div>
+        <div class="col-6 panel">
+          <h3 class="h2">Savings vs F1</h3>
+          <img src="/assets/f1_vs_savings.png" alt="Savings vs F1" style="width:100%; border-radius:10px;" />
+        </div>
+        <div class="col-6 panel">
+          <h3 class="h2">Pareto Frontier</h3>
+          <img src="/assets/pareto_frontier.png" alt="Pareto frontier" style="width:100%; border-radius:10px;" />
+        </div>
+      </div>
+    </section>
+
+    <!-- DATASET NOTE -->
+    <section>
+      <div class="panel">
+        <h2 class="h2">ECG Benchmark Notes</h2>
+        <p>
+          We benchmark with a CSV derived from the MIT-BIH Arrhythmia Database. See
+          <a href="/assets/2025-09-ecg-mitbih.md">this short note</a> for dataset details and citation.
+        </p>
+      </div>
+    </section>
+
+    <!-- ASSETS (dynamic) -->
+    <section>
+      <div class="panel">
+        <h2 class="h2" style="margin-bottom:6px;">All assets</h2>
+        <p class="muted" style="margin-top:0">This list is generated live from the <code>/assets</code> folder.</p>
+        <div id="assets" class="assets" aria-live="polite"></div>
+        <p id="assets-fallback" class="muted" style="display:none; margin-top:10px;">
+          Having trouble loading the live list? You can browse the folder on GitHub:
+          <a href="https://github.com/oluwafemidiakhoa/oluwafemidiakhoa.github.io/tree/main/assets" target="_blank" rel="noopener">/assets</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>© 2025 Oluwafemi Idiakhoa — Apache-2.0.</div>
+      <div class="muted">This is research software; not a medical device.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Dynamically list /assets using the GitHub Contents API
+    // Works on public repos without auth (subject to rate limits).
+    const owner = "oluwafemidiakhoa";
+    const repo  = "oluwafemidiakhoa.github.io";
+    const path  = "assets";
+    const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+
+    const assetsEl = document.getElementById("assets");
+    const fallback = document.getElementById("assets-fallback");
+
+    function isImage(name) {
+      return /\.(png|jpg|jpeg|gif|svg|webp)$/i.test(name);
+    }
+    function isTextual(name) {
+      return /\.(md|txt|csv|json)$/i.test(name);
+    }
+
+    function card(file) {
+      const fileUrl = `/${path}/${file.name}`;                    // served by Pages
+      const ghUrl   = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${file.name}`;
+
+      const wrap = document.createElement("div");
+      wrap.className = "asset";
+
+      const thumb = document.createElement("div");
+      thumb.className = "asset-thumb";
+      if (isImage(file.name)) {
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.alt = file.name;
+        img.src = fileUrl;
+        thumb.appendChild(img);
+      } else {
+        const label = document.createElement("div");
+        label.textContent = file.name.split('.').pop()?.toUpperCase() || "FILE";
+        label.style.color = "#9fb5ff";
+        label.style.fontFamily = "var(--mono)";
+        thumb.appendChild(label);
+      }
+
+      const body = document.createElement("div");
+      body.className = "asset-body";
+      const ttl = document.createElement("div");
+      ttl.className = "asset-title";
+      ttl.title = file.name;
+      ttl.textContent = file.name;
+      const links = document.createElement("div");
+      links.className = "asset-links";
+      const aView = document.createElement("a");
+      aView.className = "chip";
+      aView.href = fileUrl;
+      aView.target = "_blank";
+      aView.rel = "noopener";
+      aView.textContent = isImage(file.name) ? "Open" : "Download";
+      links.appendChild(aView);
+
+      const aGH = document.createElement("a");
+      aGH.className = "chip";
+      aGH.href = ghUrl;
+      aGH.target = "_blank";
+      aGH.rel = "noopener";
+      aGH.textContent = "Raw";
+      links.appendChild(aGH);
+
+      body.appendChild(ttl);
+      body.appendChild(links);
+
+      wrap.appendChild(thumb);
+      wrap.appendChild(body);
+      return wrap;
+    }
+
+    fetch(api)
+      .then(r => {
+        if (!r.ok) throw new Error("API error");
+        return r.json();
+      })
+      .then(items => {
+        // Filter out directories; sort by name
+        const files = (items || []).filter(x => x && x.type === "file").sort((a,b) => a.name.localeCompare(b.name));
+        if (!files.length) throw new Error("No files");
+        for (const f of files) {
+          assetsEl.appendChild(card(f));
         }
-    </script>
+      })
+      .catch(() => {
+        // Graceful fallback: hide grid, show a link to GitHub folder
+        assetsEl.style.display = "none";
+        fallback.style.display = "block";
+      });
+  </script>
 </body>
 </html>
