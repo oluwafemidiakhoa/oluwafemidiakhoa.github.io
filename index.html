@@ -1,237 +1,340 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
-  <title>Sundew Algorithms — Bio-inspired, energy-aware selective activation</title>
+  <title>Sundew Algorithms — Bio‑inspired, energy‑aware selective activation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="Sundew Algorithms: bio-inspired, energy-aware selective activation for streaming data. Benchmarks, figures, and assets."
-  />
+  <meta name="description" content="Sundew Algorithms: bio‑inspired, energy‑aware selective activation for streaming data. Benchmarks, figures, and assets." />
+  <meta name="theme-color" content="#0b0d10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="color-scheme" content="dark light">
 
   <!-- Favicon & Social preview -->
   <link rel="icon" href="/assets/logo.svg" type="image/svg+xml" />
   <meta property="og:title" content="Sundew Algorithms" />
-  <meta property="og:description" content="Bio-inspired, energy-aware selective activation for streaming data." />
+  <meta property="og:description" content="Bio‑inspired, energy‑aware selective activation for streaming data." />
   <meta property="og:image" content="https://oluwafemidiakhoa.github.io/assets/og-card.png" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <style>
+    /* ------------------------------
+       DESIGN TOKENS
+    ------------------------------ */
     :root {
       --bg: #0b0d10;
-      --panel: #12161b;
+      --panel: #11151a;
+      --panel-2: #0d1116;
       --muted: #7d8a98;
       --text: #e6edf3;
       --brand: #50e3a4;   /* sundew green */
-      --accent: #82b1ff;  /* soft blue accent */
+      --accent: #82b1ff;  /* soft blue */
+      --danger: #ff7a90;
       --radius: 16px;
-      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --shadow-lg: 0 20px 40px rgba(0,0,0,.45);
+      --shadow-md: 0 10px 30px rgba(0,0,0,.35);
       --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       --sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --outline: 2px solid color-mix(in oklab, var(--accent) 65%, white 35%);
     }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--sans); }
+    [data-theme="light"] {
+      --bg: #f7fafc;
+      --panel: #ffffff;
+      --panel-2: #fbfdff;
+      --muted: #5b6b7b;
+      --text: #0b1020;
+      --shadow-lg: 0 24px 48px rgba(10, 30, 60, .12);
+      --shadow-md: 0 12px 24px rgba(10, 30, 60, .10);
+    }
+
+    /* Base */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin:0; padding:0; background: var(--bg); color: var(--text); font-family: var(--sans); }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    img { max-width: 100%; display: block; }
+    code, pre { font-family: var(--mono); }
 
-    /* Hero */
+    /* Layout */
+    .wrap { max-width: 1200px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 28px); }
+    section { padding: clamp(36px, 6vw, 72px) 0; }
+
+    /* Skip to content */
+    .skip { position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden; }
+    .skip:focus { position: fixed; left: 16px; top: 16px; width: auto; height: auto; background: var(--panel); color: var(--text); padding: 10px 14px; border-radius: 10px; z-index: 9999; box-shadow: var(--shadow-md); }
+
+    /* ------------------------------
+       GLASS + GRADIENT CHROME
+    ------------------------------ */
+    .glass {
+      background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 85%, transparent), color-mix(in oklab, var(--panel-2) 65%, transparent));
+      border: 1px solid color-mix(in oklab, var(--accent) 15%, #1e242c 85%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: saturate(130%) blur(6px);
+    }
+    .glow-border {
+      position: relative;
+      isolation: isolate;
+    }
+    .glow-border::before {
+      content: "";
+      position: absolute; inset: 0; padding: 1px; border-radius: inherit;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--brand) 60%, transparent), color-mix(in oklab, var(--accent) 40%, transparent));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none; opacity: .8;
+    }
+
+    /* ------------------------------
+       NAV
+    ------------------------------ */
+    header.navbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: color-mix(in oklab, var(--bg) 75%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--accent) 12%, #1e242c 88%);
+    }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; gap: 16px; padding: 14px 0; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight: 800; letter-spacing:.3px; }
+    .brand img { width: 28px; height: 28px; }
+    .nav-links { display:flex; align-items:center; gap: 14px; flex-wrap: wrap; }
+    .pill {
+      display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius: 999px; font-weight: 600; font-size: 14px;
+      background: color-mix(in oklab, var(--panel) 75%, transparent);
+      border: 1px solid color-mix(in oklab, var(--accent) 16%, #2a323b 84%);
+    }
+    .pill:hover { box-shadow: var(--shadow-md); text-decoration: none; }
+
+    .theme-toggle { border:0; background:transparent; cursor:pointer; width:38px; height:38px; border-radius:999px; display:grid; place-items:center; }
+    .theme-toggle:focus-visible { outline: var(--outline); }
+
+    /* ------------------------------
+       HERO
+    ------------------------------ */
     .hero {
-      background: radial-gradient(1200px 500px at 10% -10%, rgba(80, 227, 164, 0.15), transparent),
-                  radial-gradient(900px 400px at 100% 0%, rgba(130,177,255,0.16), transparent);
+      position: relative; overflow: clip;
+      background:
+        radial-gradient(1200px 500px at 10% -10%, color-mix(in oklab, var(--brand) 18%, transparent), transparent),
+        radial-gradient(900px 400px at 100% 0%, color-mix(in oklab, var(--accent) 22%, transparent), transparent);
       border-bottom: 1px solid #20242a;
     }
-    .hero-inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center; }
-    .title { font-size: 40px; line-height: 1.1; margin: 0 0 12px; letter-spacing: 0.3px; }
-    .tag { color: var(--muted); font-size: 18px; margin: 0 0 16px; }
-    .badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 20px; }
-    .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
-    .btn {
-      background: linear-gradient(180deg, #64f0b5, #3fc98f);
-      color: #0b261b;
-      padding: 12px 16px; border-radius: 12px; font-weight: 700; box-shadow: var(--shadow);
-      border: 0; cursor: pointer;
-    }
-    .btn.secondary {
-      background: #1a212a; color: var(--text); border: 1px solid #2a323b;
-    }
-    pre.code {
-      background: #0e1318; border: 1px solid #202730; border-radius: 12px;
-      padding: 14px; overflow: auto; font-family: var(--mono); font-size: 14px; color: #dce7f2;
-      margin: 0;
-    }
-    .hero-img {
-      background: #0f1419; border: 1px solid #232a33; border-radius: var(--radius);
-      padding: 8px; box-shadow: var(--shadow);
-    }
-    .hero-img img { width: 100%; border-radius: 10px; display: block; }
+    .orb { position:absolute; filter: blur(60px); opacity:.22; pointer-events:none; }
+    .orb--g { width:420px; height:420px; background: radial-gradient(circle at 30% 30%, var(--brand), transparent 60%); left:-120px; top:-120px; }
+    .orb--b { width:520px; height:520px; background: radial-gradient(circle at 60% 40%, var(--accent), transparent 60%); right:-160px; top:-180px; }
 
-    /* Sections */
-    section { padding: 44px 0; }
-    .panel {
-      background: var(--panel);
-      border: 1px solid #1e242c;
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
+    .hero-inner { display:grid; gap: clamp(16px, 3vw, 28px); align-items:center; grid-template-columns: 1.15fr .85fr; padding: clamp(28px, 6vw, 72px) 0; }
+    @media (max-width: 980px) { .hero-inner { grid-template-columns: 1fr; } }
+
+    .eyebrow { color: var(--muted); text-transform: uppercase; letter-spacing: .16em; font-size: 12px; margin: 0 0 6px; }
+    .title { font-size: clamp(34px, 7vw, 64px); line-height: 1.05; margin: 0 0 10px; letter-spacing: .2px; }
+    .tag { color: var(--muted); font-size: clamp(16px, 2.4vw, 20px); margin: 0 0 18px; }
+
+    .badges { display:flex; flex-wrap:wrap; gap: 10px; margin: 10px 0 18px; }
+
+    .cta { display:flex; flex-wrap:wrap; gap: 12px; margin-top: 16px; }
+    .btn {
+      --bg1: #64f0b5; --bg2: #3fc98f; --txt: #052014;
+      background: linear-gradient(180deg, var(--bg1), var(--bg2)); color: var(--txt);
+      padding: 12px 16px; border-radius: 12px; font-weight: 800; border: 0; cursor: pointer; box-shadow: var(--shadow-lg);
+      transition: transform .08s ease; will-change: transform;
     }
-    .grid {
-      display: grid; gap: 16px;
-      grid-template-columns: repeat(12, 1fr);
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn.secondary {
+      background: color-mix(in oklab, var(--panel) 85%, transparent); color: var(--text); border: 1px solid #2a323b; box-shadow: var(--shadow-md);
     }
+    .btn:focus-visible { outline: var(--outline); }
+
+    .hero-img { padding: 10px; border-radius: var(--radius); border: 1px solid #232a33; box-shadow: var(--shadow-lg); background: var(--panel-2); }
+
+    /* ------------------------------
+       PANELS & GRID
+    ------------------------------ */
+    .panel { padding: clamp(16px, 2.2vw, 20px); }
+    .grid { display:grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
     .col-6 { grid-column: span 6; }
     .col-12 { grid-column: span 12; }
-    .h2 { font-size: 26px; margin: 0 0 10px; }
+    @media (max-width: 980px) { .col-6 { grid-column: span 12; } }
+
+    .h2 { font-size: clamp(22px, 3vw, 28px); margin: 0 0 10px; }
     .muted { color: var(--muted); }
 
-    /* Gallery / assets */
-    .assets {
-      display: grid; gap: 14px;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-    .asset {
-      background: #0f1419; border: 1px solid #222933; border-radius: 12px;
-      overflow: hidden; display: flex; flex-direction: column;
-    }
-    .asset-thumb { aspect-ratio: 16/10; display: grid; place-items: center; background: #0c1116; }
-    .asset-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    .asset-body { padding: 10px 12px; }
-    .asset-title { font-size: 14px; margin: 0 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .asset-links { display: flex; gap: 10px; flex-wrap: wrap; }
-    .chip {
-      font-size: 12px; padding: 4px 8px; border-radius: 999px; background: #1a212a; border: 1px solid #2a323b; color: #cfe6ff;
-    }
-
-    /* Copy button for code blocks */
-    .code-container {
-      position: relative;
-      margin: 8px 0;
+    /* ------------------------------
+       CODE BLOCKS
+    ------------------------------ */
+    .code-container { position: relative; margin: 8px 0; }
+    pre.code {
+      background: #0e1318; border: 1px solid #202730; border-radius: 12px;
+      padding: 14px 42px 14px 14px; overflow: auto; font-size: 14px; color: #dce7f2; margin: 0; line-height: 1.5;
     }
     .copy-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 12px;
-      padding: 6px 10px;
-      cursor: pointer;
-      opacity: 0;
-      transition: all 0.2s;
-    }
-    .code-container:hover .copy-btn {
-      opacity: 1;
-    }
-    .copy-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
+      position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; color: white; font-size: 12px; padding: 6px 10px; cursor: pointer; transition: background .2s; }
+    .copy-btn:hover { background: rgba(255,255,255,.18); }
+    .copy-btn:focus-visible { outline: var(--outline); }
+
+    /* ------------------------------
+       STAT CARDS
+    ------------------------------ */
+    .stats { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-top: 16px; }
+    .stat { text-align:center; padding: 16px; }
+    .stat .val { font-weight: 800; font-size: clamp(18px, 3vw, 26px); color: var(--brand); }
+    .stat .label { color: var(--muted); font-size: 14px; }
+
+    /* ------------------------------
+       ASSETS GRID
+    ------------------------------ */
+    .assets { display:grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .asset { display:flex; flex-direction:column; overflow:hidden; border-radius: 12px; border: 1px solid #222933; background: #0f1419; transition: transform .12s ease; }
+    .asset:hover { transform: translateY(-2px); }
+    .asset-thumb { aspect-ratio: 16/10; display:grid; place-items:center; background:#0c1116; }
+    .asset-thumb img { object-fit: contain; }
+    .asset-body { padding: 10px 12px; display:grid; gap:8px; }
+    .asset-title { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .asset-links { display:flex; gap: 10px; flex-wrap: wrap; }
+    .chip { font-size: 12px; padding: 6px 10px; border-radius: 999px; background: #1a212a; border: 1px solid #2a323b; color: #cfe6ff; text-decoration:none; }
+    .chip:hover { background: #202834; }
+
+    /* Toolbar above assets */
+    .toolbar { display:flex; align-items:center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .search { flex:1; position:relative; }
+    .search input { width:100%; padding: 10px 12px 10px 36px; border-radius: 10px; border: 1px solid #2a323b; background: var(--panel); color: var(--text); }
+    .search svg { position:absolute; left:10px; top:50%; translate: 0 -50%; opacity:.6; }
 
     /* Footer */
-    footer { color: var(--muted); padding: 36px 0 60px; text-align: center; }
-    @media (max-width: 860px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .col-6 { grid-column: span 12; }
+    footer { color: var(--muted); padding: 36px 0 60px; text-align:center; }
+
+    /* Floating back-to-top */
+    .fab { position: fixed; right: 20px; bottom: 20px; width: 44px; height: 44px; border-radius: 999px; display:grid; place-items:center; border: 1px solid #2a323b; background: var(--panel); box-shadow: var(--shadow-md); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+    .fab.show { opacity: 1; pointer-events: auto; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .btn, .asset { transition: none; }
+      .orb { display:none; }
     }
   </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="Sundew Algorithms home">
+        <img src="/assets/logo.svg" alt="Sundew logo" />
+        <span>Sundew Algorithms</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="pill" href="#what">What</a>
+        <a class="pill" href="#results">Results</a>
+        <a class="pill" href="#plots">Figures</a>
+        <a class="pill" href="#api">API</a>
+        <a class="pill" href="#bench">Benchmark</a>
+        <a class="pill" href="#assets">Assets</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
 
   <!-- HERO -->
-  <header class="hero">
+  <section class="hero" id="top">
+    <div class="orb orb--g" aria-hidden="true"></div>
+    <div class="orb orb--b" aria-hidden="true"></div>
+
     <div class="wrap hero-inner">
       <div>
-        <h1 class="title">Sundew Algorithms</h1>
-        <p class="tag">Bio-inspired, energy-aware selective activation for streaming data.</p>
+        <p class="eyebrow">Bio‑inspired streaming intelligence</p>
+        <h1 class="title">Energy‑aware selective activation —
+          <span style="background:linear-gradient(90deg,var(--brand),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;">built for edge</span>
+        </h1>
+        <p class="tag">Sundew decides when to fully process an input and when to skip, trading a tiny accuracy drop for large energy savings.</p>
 
-        <div class="badges">
-          <a href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">
-            <img alt="PyPI" src="https://badge.fury.io/py/sundew-algorithms.svg" />
+        <div class="badges" role="group" aria-label="Project status badges">
+          <a href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener" class="pill" title="View on PyPI" aria-label="PyPI package">
+            <span id="pypiVersion">PyPI • loading…</span>
           </a>
-          <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/actions" target="_blank" rel="noopener">
-            <img alt="CI" src="https://github.com/oluwafemidiakhoa/sundew_algorithms/workflows/CI/badge.svg" />
+          <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/actions" target="_blank" rel="noopener" class="pill" title="Continuous Integration">
+            CI • passing
           </a>
-          <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">
-            <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-          </a>
+          <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener" class="pill" title="MIT License">MIT License</a>
+          <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener" class="pill" title="GitHub Stars"><span id="ghStars">★ —</span></a>
         </div>
 
-        <div class="panel" style="margin: 10px 0 14px">
+        <div class="glass glow-border panel" style="margin: 12px 0 16px">
           <div class="muted" style="margin-bottom:6px">Install</div>
           <div class="code-container">
-            <pre class="code">pip install -U sundew-algorithms</pre>
-            <button class="copy-btn" onclick="copyToClipboard('pip install -U sundew-algorithms', this)">Copy</button>
+            <pre class="code" id="installCmd">pip install -U sundew-algorithms</pre>
+            <button class="copy-btn" data-copy="#installCmd">Copy</button>
           </div>
           <div class="muted" style="margin:8px 0 6px">Quickstart</div>
           <div class="code-container">
-            <pre class="code">python -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"</pre>
-            <button class="copy-btn" onclick="copyToClipboard('python -m sundew --demo --events 50 --temperature 0.08 --save \"%USERPROFILE%\\Downloads\\demo_run.json\"', this)">Copy</button>
+            <pre class="code" id="quickstartCmd">python -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"</pre>
+            <button class="copy-btn" data-copy="#quickstartCmd">Copy</button>
           </div>
-          <div class="cta">
+          <div class="cta" role="group" aria-label="Primary actions">
             <a class="btn" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">View on PyPI</a>
             <a class="btn secondary" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">Source on GitHub</a>
           </div>
         </div>
       </div>
 
-      <div class="hero-img">
-        <!-- Your headline bench figure -->
-        <img src="/assets/ecg_bench_50000.png" alt="ECG benchmark bar chart (baseline vs actual energy cost)">
+      <div class="hero-img glass glow-border" aria-label="Headline benchmark figure">
+        <img src="/assets/ecg_bench_50000.png" alt="ECG benchmark bar chart comparing baseline vs actual energy cost" loading="eager">
       </div>
     </div>
-  </header>
+  </section>
 
-  <main class="wrap">
+  <main id="main" class="wrap">
     <!-- WHAT IS SUNDEW -->
-    <section>
+    <section id="what">
       <div class="grid">
-        <div class="col-12 panel">
+        <div class="col-12 glass glow-border panel">
           <h2 class="h2">What is Sundew?</h2>
           <p>
-            Sundew is an adaptive gating algorithm inspired by the carnivorous sundew plant: it decides
-            when to fully process an input and when to skip, trading a tiny accuracy drop for
-            large energy savings. It tunes its threshold online using a lightweight PI controller,
-            respects an energy budget, and supports "soft" logistic gating via temperature.
+            <strong>Sundew</strong> is an adaptive gating algorithm inspired by the carnivorous sundew plant: it decides when to fully process an input and when to skip, 
+            minimizing compute while staying within an energy budget. It tunes its threshold online with a lightweight <abbr title="Proportional–Integral">PI</abbr> controller and 
+            supports soft logistic gating via temperature.
           </p>
           <p class="muted">
-            Ideal for edge devices, streaming analytics, and any scenario where every millijoule
-            or CPU cycle matters. Perfect for wearables, IoT sensors, and battery-powered AI systems.
+            Built for edge devices, streaming analytics, and any scenario where every millijoule or CPU cycle matters. Ideal for wearables, IoT sensors, and battery‑powered AI systems.
           </p>
         </div>
       </div>
     </section>
 
     <!-- KEY METRICS -->
-    <section>
+    <section id="results">
       <div class="grid">
-        <div class="col-12 panel">
-          <h2 class="h2">Key Results (MIT-BIH ECG, 50k samples)</h2>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin-top: 16px;">
-            <div style="text-align: center;">
-              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">0.103</div>
-              <div class="muted" style="font-size: 14px;">Activation rate</div>
+        <div class="col-12 glass glow-border panel">
+          <h2 class="h2">Key Results (MIT‑BIH ECG, 50k samples)</h2>
+          <div class="stats" role="list">
+            <div class="stat glass" role="listitem">
+              <div class="val">0.103</div>
+              <div class="label">Activation rate</div>
             </div>
-            <div style="text-align: center;">
-              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">85.45%</div>
-              <div class="muted" style="font-size: 14px;">Energy savings</div>
+            <div class="stat glass" role="listitem">
+              <div class="val">85.45%</div>
+              <div class="label">Energy savings</div>
             </div>
-            <div style="text-align: center;">
-              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">530,000</div>
-              <div class="muted" style="font-size: 14px;">Baseline cost</div>
+            <div class="stat glass" role="listitem">
+              <div class="val">530,000</div>
+              <div class="label">Baseline cost</div>
             </div>
-            <div style="text-align: center;">
-              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">77,106</div>
-              <div class="muted" style="font-size: 14px;">Actual cost</div>
+            <div class="stat glass" role="listitem">
+              <div class="val">77,106</div>
+              <div class="label">Actual cost</div>
             </div>
-            <div style="text-align: center;">
-              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">0.683</div>
-              <div class="muted" style="font-size: 14px;">Final threshold</div>
+            <div class="stat glass" role="listitem">
+              <div class="val">0.683</div>
+              <div class="label">Final threshold</div>
             </div>
-            <div style="text-align: center;">
-              <div style="font-size: 24px; font-weight: 600; color: var(--brand);">89.6</div>
-              <div class="muted" style="font-size: 14px;">Energy remaining</div>
+            <div class="stat glass" role="listitem">
+              <div class="val">89.6</div>
+              <div class="label">Energy remaining</div>
             </div>
           </div>
         </div>
@@ -239,34 +342,34 @@
     </section>
 
     <!-- KEY PLOTS -->
-    <section>
+    <section id="plots">
       <div class="grid">
-        <div class="col-6 panel">
+        <div class="col-6 glass glow-border panel">
           <h3 class="h2">Precision–Recall</h3>
-          <img src="/assets/precision_recall.png" alt="Precision vs Recall" style="width:100%; border-radius:10px;" />
+          <img src="/assets/precision_recall.png" alt="Precision vs Recall" />
         </div>
-        <div class="col-6 panel">
+        <div class="col-6 glass glow-border panel">
           <h3 class="h2">Activation rate vs F1</h3>
-          <img src="/assets/f1_and_rate.png" alt="Activation rate vs F1" style="width:100%; border-radius:10px;" />
+          <img src="/assets/f1_and_rate.png" alt="Activation rate vs F1" />
         </div>
-        <div class="col-6 panel">
+        <div class="col-6 glass glow-border panel">
           <h3 class="h2">Savings vs F1</h3>
-          <img src="/assets/f1_vs_savings.png" alt="Savings vs F1" style="width:100%; border-radius:10px;" />
+          <img src="/assets/f1_vs_savings.png" alt="Savings vs F1" />
         </div>
-        <div class="col-6 panel">
+        <div class="col-6 glass glow-border panel">
           <h3 class="h2">Pareto Frontier</h3>
-          <img src="/assets/pareto_frontier.png" alt="Pareto frontier" style="width:100%; border-radius:10px;" />
+          <img src="/assets/pareto_frontier.png" alt="Pareto frontier" />
         </div>
       </div>
     </section>
 
     <!-- API EXAMPLE -->
-    <section>
+    <section id="api">
       <div class="grid">
-        <div class="col-12 panel">
+        <div class="col-12 glass glow-border panel">
           <h2 class="h2">Quick API Example</h2>
           <div class="code-container">
-            <pre class="code">from sundew import SundewAlgorithm
+            <pre class="code" id="apiCode">from sundew import SundewAlgorithm
 from sundew.config import SundewConfig
 
 cfg = SundewConfig(
@@ -288,41 +391,20 @@ x = {
 result = algo.process(x)
 print(result or "Skipped (gate dormant)")
 print(algo.report())  # Get energy/activation metrics</pre>
-            <button class="copy-btn" onclick="copyToClipboard(`from sundew import SundewAlgorithm
-from sundew.config import SundewConfig
-
-cfg = SundewConfig(
-    activation_threshold=0.78, 
-    target_activation_rate=0.15,
-    gate_temperature=0.08, 
-    max_threshold=0.92, 
-    energy_pressure=0.04
-)
-algo = SundewAlgorithm(cfg)
-
-# Process a sample input
-x = {
-    \"magnitude\": 63, 
-    \"anomaly_score\": 0.52, 
-    \"context_relevance\": 0.31, 
-    \"urgency\": 0.18
-}
-result = algo.process(x)
-print(result or \"Skipped (gate dormant)\")
-print(algo.report())  # Get energy/activation metrics`, this)">Copy</button>
+            <button class="copy-btn" data-copy="#apiCode">Copy</button>
           </div>
         </div>
       </div>
     </section>
 
     <!-- BENCHMARK REPRODUCTION -->
-    <section>
+    <section id="bench">
       <div class="grid">
-        <div class="col-12 panel">
+        <div class="col-12 glass glow-border panel">
           <h2 class="h2">Reproduce the ECG Benchmark</h2>
           <p>Run the exact command that generated our published results:</p>
           <div class="code-container">
-            <pre class="code">py -3.13 -m benchmarks.bench_ecg_from_csv \
+            <pre class="code" id="benchCmd">py -3.13 -m benchmarks.bench_ecg_from_csv \
   --csv "data\MIT-BIH Arrhythmia Database.csv" \
   --limit 50000 \
   --activation-threshold 0.70 \
@@ -332,39 +414,37 @@ print(algo.report())  # Get energy/activation metrics`, this)">Copy</button>
   --max-threshold 0.92 \
   --refractory 0 \
   --save results\ecg_bench_50000.json</pre>
-            <button class="copy-btn" onclick="copyToClipboard(`py -3.13 -m benchmarks.bench_ecg_from_csv \\
-  --csv \"data\\MIT-BIH Arrhythmia Database.csv\" \\
-  --limit 50000 \\
-  --activation-threshold 0.70 \\
-  --target-rate 0.12 \\
-  --gate-temperature 0.07 \\
-  --energy-pressure 0.04 \\
-  --max-threshold 0.92 \\
-  --refractory 0 \\
-  --save results\\ecg_bench_50000.json`, this)">Copy</button>
+            <button class="copy-btn" data-copy="#benchCmd">Copy</button>
           </div>
           <p class="muted" style="margin-top: 12px;">
-            Dataset ref: Moody & Mark, IEEE EMBS 2001. CSV schema auto-detected (signal/label fallbacks).
+            Dataset ref: Moody &amp; Mark, IEEE EMBS 2001. CSV schema auto‑detected (signal/label fallbacks).
           </p>
         </div>
       </div>
     </section>
 
     <!-- DATASET NOTE -->
-    <section>
-      <div class="panel">
+    <section id="notes">
+      <div class="glass glow-border panel">
         <h2 class="h2">ECG Benchmark Notes</h2>
         <p>
-          We benchmark with a CSV derived from the MIT-BIH Arrhythmia Database. See
+          We benchmark with a CSV derived from the MIT‑BIH Arrhythmia Database. See
           <a href="/assets/2025-09-ecg-mitbih.md">this short note</a> for dataset details and citation.
         </p>
       </div>
     </section>
 
     <!-- ASSETS (dynamic) -->
-    <section>
-      <div class="panel">
-        <h2 class="h2" style="margin-bottom:6px;">All assets</h2>
+    <section id="assets-section">
+      <div class="glass glow-border panel">
+        <div class="toolbar">
+          <h2 class="h2" style="margin:0;">All assets</h2>
+          <div class="search" role="search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m21 21-4.35-4.35M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="1.5"/></svg>
+            <label for="assetFilter" class="visually-hidden">Filter assets</label>
+            <input id="assetFilter" placeholder="Filter by name or extension…" aria-label="Filter assets" />
+          </div>
+        </div>
         <p class="muted" style="margin-top:0">This list is generated live from the <code>/assets</code> folder.</p>
         <div id="assets" class="assets" aria-live="polite"></div>
         <p id="assets-fallback" class="muted" style="display:none; margin-top:10px;">
@@ -382,113 +462,151 @@ print(algo.report())  # Get energy/activation metrics`, this)">Copy</button>
     </div>
   </footer>
 
+  <button class="fab" id="toTop" aria-label="Back to top" title="Back to top" hidden>
+    ↑
+  </button>
+
   <script>
-    // Copy to clipboard functionality
-    async function copyToClipboard(text, button) {
-      try {
-        await navigator.clipboard.writeText(text);
-        const originalText = button.textContent;
+    // ------------------------------
+    // Theme toggle (persist in localStorage)
+    // ------------------------------
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const storedTheme = localStorage.getItem('sundew-theme');
+    if (storedTheme) document.documentElement.setAttribute('data-theme', storedTheme);
+    themeToggle?.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('sundew-theme', next);
+    });
+
+    // ------------------------------
+    // Copy to clipboard
+    // ------------------------------
+    function copyFrom(selector, button) {
+      const el = document.querySelector(selector);
+      if (!el) return;
+      const text = el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const old = button.textContent;
         button.textContent = 'Copied✓';
         button.style.background = 'rgba(80, 227, 164, 0.3)';
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.style.background = 'rgba(255, 255, 255, 0.1)';
-        }, 1200);
-      } catch (err) {
-        console.error('Failed to copy text: ', err);
-      }
+        setTimeout(() => { button.textContent = old; button.style.background = 'rgba(255,255,255,.06)'; }, 1200);
+      }).catch(() => {
+        button.textContent = 'Failed';
+        button.style.background = 'rgba(255, 122, 144, 0.35)';
+        setTimeout(() => { button.textContent = 'Copy'; button.style.background = 'rgba(255,255,255,.06)'; }, 1200);
+      });
+    }
+    for (const btn of document.querySelectorAll('.copy-btn')) {
+      btn.addEventListener('click', () => copyFrom(btn.dataset.copy, btn));
     }
 
-    // Dynamically list /assets using the GitHub Contents API
-    // Works on public repos without auth (subject to rate limits).
-    const owner = "oluwafemidiakhoa";
-    const repo  = "oluwafemidiakhoa.github.io";
-    const path  = "assets";
+    // ------------------------------
+    // Dynamic badges (PyPI version & GitHub stars)
+    // ------------------------------
+    fetch('https://pypi.org/pypi/sundew-algorithms/json').then(r => r.json()).then(data => {
+      const v = data?.info?.version ? 'PyPI • v' + data.info.version : 'PyPI';
+      document.getElementById('pypiVersion').textContent = v;
+    }).catch(() => {});
+
+    fetch('https://api.github.com/repos/oluwafemidiakhoa/sundew_algorithms').then(r => r.json()).then(repo => {
+      const stars = repo?.stargazers_count ?? 0;
+      document.getElementById('ghStars').textContent = `★ ${stars.toLocaleString()}`;
+    }).catch(() => {});
+
+    // ------------------------------
+    // Assets directory listing + filter
+    // ------------------------------
+    const owner = 'oluwafemidiakhoa';
+    const repo  = 'oluwafemidiakhoa.github.io';
+    const path  = 'assets';
     const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-    const assetsEl = document.getElementById("assets");
-    const fallback = document.getElementById("assets-fallback");
+    const assetsEl = document.getElementById('assets');
+    const fallback = document.getElementById('assets-fallback');
+    const filterEl = document.getElementById('assetFilter');
 
-    function isImage(name) {
-      return /\.(png|jpg|jpeg|gif|svg|webp)$/i.test(name);
-    }
-    function isTextual(name) {
-      return /\.(md|txt|csv|json)$/i.test(name);
-    }
+    const isImage = (name) => /\.(png|jpg|jpeg|gif|svg|webp)$/i.test(name);
 
     function card(file) {
       const fileUrl = `/${path}/${file.name}`;                    // served by Pages
       const ghUrl   = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${file.name}`;
 
-      const wrap = document.createElement("div");
-      wrap.className = "asset";
+      const wrap = document.createElement('div');
+      wrap.className = 'asset';
+      wrap.tabIndex = 0;
 
-      const thumb = document.createElement("div");
-      thumb.className = "asset-thumb";
+      const thumb = document.createElement('div');
+      thumb.className = 'asset-thumb';
       if (isImage(file.name)) {
-        const img = document.createElement("img");
-        img.loading = "lazy";
+        const img = document.createElement('img');
+        img.loading = 'lazy';
         img.alt = file.name;
         img.src = fileUrl;
         thumb.appendChild(img);
       } else {
-        const label = document.createElement("div");
-        label.textContent = file.name.split('.').pop()?.toUpperCase() || "FILE";
-        label.style.color = "#9fb5ff";
-        label.style.fontFamily = "var(--mono)";
+        const label = document.createElement('div');
+        label.textContent = (file.name.split('.').pop() || 'FILE').toUpperCase();
+        label.style.color = '#9fb5ff';
+        label.style.fontFamily = 'var(--mono)';
         thumb.appendChild(label);
       }
 
-      const body = document.createElement("div");
-      body.className = "asset-body";
-      const ttl = document.createElement("div");
-      ttl.className = "asset-title";
+      const body = document.createElement('div');
+      body.className = 'asset-body';
+      const ttl = document.createElement('div');
+      ttl.className = 'asset-title';
       ttl.title = file.name;
       ttl.textContent = file.name;
-      const links = document.createElement("div");
-      links.className = "asset-links";
-      const aView = document.createElement("a");
-      aView.className = "chip";
-      aView.href = fileUrl;
-      aView.target = "_blank";
-      aView.rel = "noopener";
-      aView.textContent = isImage(file.name) ? "Open" : "Download";
-      links.appendChild(aView);
+      const links = document.createElement('div');
+      links.className = 'asset-links';
+      const aView = document.createElement('a');
+      aView.className = 'chip';
+      aView.href = fileUrl; aView.target = '_blank'; aView.rel = 'noopener';
+      aView.textContent = isImage(file.name) ? 'Open' : 'Download';
+      const aGH = document.createElement('a');
+      aGH.className = 'chip';
+      aGH.href = ghUrl; aGH.target = '_blank'; aGH.rel = 'noopener'; aGH.textContent = 'Raw';
+      links.append(aView, aGH);
 
-      const aGH = document.createElement("a");
-      aGH.className = "chip";
-      aGH.href = ghUrl;
-      aGH.target = "_blank";
-      aGH.rel = "noopener";
-      aGH.textContent = "Raw";
-      links.appendChild(aGH);
-
-      body.appendChild(ttl);
-      body.appendChild(links);
-
-      wrap.appendChild(thumb);
-      wrap.appendChild(body);
+      body.append(ttl, links);
+      wrap.append(thumb, body);
       return wrap;
     }
 
+    function render(files) {
+      assetsEl.replaceChildren();
+      for (const f of files) assetsEl.appendChild(card(f));
+    }
+
+    let ALL_FILES = [];
     fetch(api)
-      .then(r => {
-        if (!r.ok) throw new Error("API error");
-        return r.json();
-      })
+      .then(r => { if (!r.ok) throw new Error('API error'); return r.json(); })
       .then(items => {
-        // Filter out directories; sort by name
-        const files = (items || []).filter(x => x && x.type === "file").sort((a,b) => a.name.localeCompare(b.name));
-        if (!files.length) throw new Error("No files");
-        for (const f of files) {
-          assetsEl.appendChild(card(f));
-        }
+        const files = (items || []).filter(x => x && x.type === 'file').sort((a,b) => a.name.localeCompare(b.name));
+        if (!files.length) throw new Error('No files');
+        ALL_FILES = files; render(files);
       })
-      .catch(() => {
-        // Graceful fallback: hide grid, show a link to GitHub folder
-        assetsEl.style.display = "none";
-        fallback.style.display = "block";
-      });
+      .catch(() => { assetsEl.style.display = 'none'; fallback.style.display = 'block'; });
+
+    filterEl?.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) return render(ALL_FILES);
+      const filtered = ALL_FILES.filter(f => f.name.toLowerCase().includes(q));
+      render(filtered);
+    });
+
+    // ------------------------------
+    // Floating back-to-top
+    // ------------------------------
+    const toTop = document.getElementById('toTop');
+    const scrollHandler = () => {
+      if (window.scrollY > 600) { toTop.classList.add('show'); toTop.hidden = false; }
+      else { toTop.classList.remove('show'); toTop.hidden = true; }
+    };
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   </script>
 </body>
 </html>
