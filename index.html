@@ -18,13 +18,7 @@
             --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -32,34 +26,40 @@
             background: var(--bg-gradient);
             min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         /* Header Styles */
-        .header {
-            text-align: center;
-            color: white;
-            padding: 40px 20px;
-            margin-bottom: 40px;
-        }
-        
+        .header { text-align: center; color: white; padding: 40px 20px; margin-bottom: 40px; }
         .header h1 {
-            font-size: 3.5em;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-size: 3.5em; font-weight: 700; margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        
-        .header .subtitle {
-            font-size: 1.3em;
+        .header .subtitle { font-size: 1.3em; font-weight: 300; opacity: 0.9; margin-bottom: 20px; }
+        .header .badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        .badge {
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);
+            padding: 8px 16px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600; font-size: 0.9em;
+        }
+        /* Navigation */
+        .nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); padding: 15px; border-radius: 15px; margin-bottom: 30px; box-shadow: var(--card-shadow); }
+        .nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
+        .nav a { text-decoration: none; color: var(--primary-color); font-weight: 600; padding: 10px 20px; border-radius: 8px; transition: var(--transition); }
+        .nav a:hover { background: var(--primary-color); color: white; transform: translateY(-2px); }
+        /* Card Grid System */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .card {
+            background: white; border-radius: 15px; padding: 25px; box-shadow: var(--card-shadow); transition: var(--transition); position: relative; overflow: hidden;
+        }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .card h3 { color: var(--primary-color); font-size: 1.4em; margin-bottom: 15px; font-weight: 600; }
+        .card h4 { color: var(--secondary-color); font-size: 1.1em; margin: 15px 0 10px 0; }
+        /* Statistics Display */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
             font-weight: 300;
             opacity: 0.9;
             margin-bottom: 20px;
@@ -667,7 +667,7 @@
                 
                 <div class="image-gallery">
                     <div class="image-item">
-                        <img src="visualizations/research_summary_infographic.png" alt="Research Summary Infographic">
+                        <img src="assets/research_summary_infographic.png" alt="Research Summary Infographic">
                         <div class="image-overlay">
                             <h4>Research Summary Infographic</h4>
                             <p>Comprehensive overview with key findings and breakthrough results</p>
@@ -836,9 +836,9 @@
                         <li><a href="data/results/comprehensive_summary.csv" download>📊 Comprehensive Results Summary (CSV)</a></li>
                         <li><a href="data/results/detailed_results.csv" download>📈 Detailed Sample Results (CSV)</a></li>
                         <li><a href="data/results/dataset_information.csv" download>📚 Dataset Information (CSV)</a></li>
-                        <li><a href="visualizations/research_summary_infographic.png" download>🎨 Research Summary Infographic (PNG)</a></li>
-                        <li><a href="Whitepaper.md" download>📄 Technical Whitepaper (Markdown)</a></li>
-                        <li><a href="README.md" download>📖 Implementation Guide (Markdown)</a></li>
+                        <li><a href="assets/research_summary_infographic.png" download>🎨 Research Summary Infographic (PNG)</a></li>
+                        <li><a href="assets/Whitepaper.md" download>📄 Technical Whitepaper (Markdown)</a></li>
+                        <li><a href="assets/README.md" download>📖 Implementation Guide (Markdown)</a></li>
                     </ul>
                 </div>
             </div>
@@ -928,6 +928,53 @@
             console.log('📊 Interactive visualizations and data ready');
             console.log('🎯 World-class research results displayed');
         });
-    </script>
-</body>
-</html>
+    </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sundew Algorithm: Comprehensive Research Dashboard</title>
+    <style>
+        /* Modern CSS Framework */
+        :root {
+            --primary-color: #2E86AB;
+            --secondary-color: #A23B72;
+            --accent-color: #F18F01;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --error-color: #F44336;
+            --neutral-color: #607D8B;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .header 
