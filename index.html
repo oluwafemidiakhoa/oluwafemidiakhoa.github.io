@@ -3,129 +3,151 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Sundew Algorithm – Energy‑constrained autonomic inference research dashboard: metrics, datasets, results, and downloads." />
+  <meta name="description" content="Sundew Algorithm – Energy-constrained autonomic inference research dashboard: metrics, datasets, results, and downloads." />
   <meta name="theme-color" content="#2E86AB" />
   <title>Sundew Algorithm • Research Dashboard</title>
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Sundew Algorithm — Research Dashboard" />
+  <meta property="og:description" content="Energy-aware gating controller for real-time AI. Decide when to think; maximize utility per joule." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://oluwafemidiakhoa.github.io/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Sundew Algorithm",
+    "url": "https://oluwafemidiakhoa.github.io/",
+    "codeRepository": "https://github.com/oluwafemidiakhoa/sundew_algorithms",
+    "programmingLanguage": "Python",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "identifier": "https://doi.org/10.5281/zenodo.17118217",
+    "author": {
+      "@type": "Person",
+      "name": "Oluwafemi Idiakhoa",
+      "identifier": "https://orcid.org/0009-0008-7911-1171"
+    }
+  }
+  </script>
+
   <style>
     /* =====================
        Design System
        ===================== */
-    :root {
-      --bg: #0b1020;
-      --surface: #0f152b;
-      --muted: #96a0b5;
-      --text: #e9ecf4;
-      --primary: #2E86AB;
-      --secondary: #A23B72;
-      --accent: #F18F01;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --card: rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.08);
-      --glass: rgba(255,255,255,0.06);
-      --shadow-1: 0 10px 30px rgba(0,0,0,.25);
-      --radius: 16px;
-      --radius-sm: 10px;
-      --radius-lg: 24px;
-      --transition: 240ms cubic-bezier(.2,.8,.2,1);
-      /* Hero gradient tuned to your screenshot (periwinkle→soft blue) */
-      --grad-hero: linear-gradient(135deg, #6a79f0 0%, #6f81ff 50%, #7f8cff 100%);
+    :root{
+      --bg:#0b1020; --surface:#0f152b; --muted:#96a0b5; --text:#e9ecf4;
+      --primary:#2E86AB; --secondary:#A23B72; --accent:#F18F01;
+      --success:#22c55e; --warning:#f59e0b; --danger:#ef4444;
+      --card:rgba(255,255,255,0.04); --card-border:rgba(255,255,255,0.08); --glass:rgba(255,255,255,0.06);
+      --shadow-1:0 10px 30px rgba(0,0,0,.25);
+      --radius:16px; --radius-sm:10px; --radius-lg:24px; --transition:240ms cubic-bezier(.2,.8,.2,1);
+      /* Hero gradient tuned to your palette */
+      --grad-hero:linear-gradient(135deg,#6a79f0 0%,#6f81ff 50%,#7f8cff 100%);
     }
-    .theme-light {
-      --bg: #f4f7fb; --surface:#fff; --text:#101428; --muted:#55607a;
-      --card: #fff; --card-border:#e7eaf0; --glass: rgba(255,255,255,.7);
-      --shadow-1: 0 10px 24px rgba(28,24,46,.08);
-      /* Lighter variant of the new hero gradient for light mode */
-      --grad-hero: linear-gradient(135deg, #8592ff 0%, #9aa7ff 60%, #b2bdff 100%);
+    .theme-light{
+      --bg:#f4f7fb; --surface:#fff; --text:#101428; --muted:#55607a;
+      --card:#fff; --card-border:#e7eaf0; --glass:rgba(255,255,255,.7);
+      --shadow-1:0 10px 24px rgba(28,24,46,.08);
+      --grad-hero:linear-gradient(135deg,#8592ff 0%,#9aa7ff 60%,#b2bdff 100%);
     }
 
-    * { box-sizing:border-box }
-    html, body { height: 100%; }
-    body {
-      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--text); background: var(--bg);
-      line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background:var(--bg); line-height:1.5; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     }
 
     /* ===== Layout ===== */
-    .container { width: min(1200px, 92vw); margin-inline: auto; }
-    .section { padding: 56px 0; }
+    .container{width:min(1200px,92vw); margin-inline:auto}
+    .section{padding:56px 0}
 
     /* ===== Skip link ===== */
-    .skip-link { position:absolute; left:-1000px; top:-1000px; }
-    .skip-link:focus { left: 16px; top: 16px; background:#111; color:#fff; padding:8px 12px; border-radius:8px; z-index:9999; }
+    .skip-link{position:absolute; left:-1000px; top:-1000px}
+    .skip-link:focus{left:16px; top:16px; background:#111; color:#fff; padding:8px 12px; border-radius:8px; z-index:9999}
 
     /* ===== Navbar ===== */
-    .navbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); background: color-mix(in oklab, var(--surface), transparent 40%); border-bottom:1px solid var(--card-border); }
-    .nav-wrap { display:flex; align-items:center; justify-content:space-between; gap: 16px; padding-block: 12px; }
-    .brand { display:flex; align-items:center; gap:10px; font-weight: 800; letter-spacing:.2px; }
-    .brand .logo { width: 28px; height: 28px; border-radius:8px; background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: var(--shadow-1); }
-    .nav { display:flex; flex-wrap:wrap; gap: 6px; }
-    .nav a { color: var(--muted); text-decoration:none; padding:8px 12px; border-radius: 10px; transition: var(--transition); font-weight: 600; }
-    .nav a:hover, .nav a[aria-current="page"] { color: var(--text); background: var(--card); }
+    .navbar{position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); background:color-mix(in oklab,var(--surface),transparent 40%); border-bottom:1px solid var(--card-border)}
+    .nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:12px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand .logo{width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg,var(--primary),var(--secondary)); box-shadow:var(--shadow-1)}
+    .nav{display:flex; flex-wrap:wrap; gap:6px}
+    .nav a{color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:10px; transition:var(--transition); font-weight:600}
+    .nav a:hover,.nav a[aria-current="page"]{color:var(--text); background:var(--card)}
+    .links{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .link-chip{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--card-border); color:var(--text); padding:6px 10px; border-radius:999px; font-weight:700; text-decoration:none}
+
+    /* ===== Trust bar ===== */
+    .trustbar{background:color-mix(in oklab,var(--surface),transparent 30%); border-top:1px solid var(--card-border); border-bottom:1px solid var(--card-border)}
+    .trustbar .logos{display:flex; gap:18px; flex-wrap:wrap; align-items:center; justify-content:center; padding:10px 0; color:var(--muted); font-weight:700}
+    .trustbar .logos a{color:inherit; text-decoration:none}
+    .trustbar .dot{opacity:.45}
 
     /* ===== Hero ===== */
-    .hero { background: var(--grad-hero); position: relative; overflow:hidden; }
-    .hero .container { padding-block: 72px; text-align: center; }
-    .eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:.85rem; color: var(--muted); background: var(--glass); border: 1px solid var(--card-border); padding:6px 10px; border-radius: 999px; }
-    .title { font-size: clamp(2rem, 6vw, 3.5rem); line-height:1.05; letter-spacing:-.02em; margin: 14px 0 10px; font-weight: 900; }
-    .title-gradient { background: none; -webkit-background-clip: initial; background-clip: initial; color: #ffffff; text-shadow: 0 2px 0 rgba(0,0,0,.18), 0 10px 24px rgba(0,0,0,.22); }
-    .subtitle { color: rgba(255,255,255,.92); font-size: clamp(1rem, 2.6vw, 1.2rem); max-width: 70ch; text-shadow: 0 1px 0 rgba(0,0,0,.18); margin-inline: auto; }
-    .badge-row { display:flex; flex-wrap:wrap; gap:10px; margin-top: 20px; }
-    .badge { background: var(--glass); border:1px solid var(--card-border); padding: 8px 12px; border-radius: 999px; font-weight: 700; color: var(--text); }
-    .cta { margin-top: 22px; display:flex; gap: 12px; flex-wrap:wrap }
-    .btn { appearance:none; border:none; cursor:pointer; font-weight: 800; letter-spacing:.2px; padding: 12px 16px; border-radius: 12px; transition: var(--transition); }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), #46a6cc); color: white; box-shadow: var(--shadow-1); }
-    .btn-primary:hover { transform: translateY(-2px) scale(1.01); }
-    .btn-ghost { background: var(--card); color: var(--text); border:1px solid var(--card-border); }
+    .hero{background:var(--grad-hero); position:relative; overflow:hidden}
+    .hero .container{padding-block:72px; text-align:center}
+    .hero .ribbon{position:absolute; top:16px; right:-56px; transform:rotate(35deg); background:linear-gradient(135deg,var(--accent),#f97316); color:#111; font-weight:900; letter-spacing:.3px; padding:6px 80px; box-shadow:var(--shadow-1); border:1px solid color-mix(in oklab,#000,#fff 15%)}
+    .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:.85rem; color:var(--muted); background:var(--glass); border:1px solid var(--card-border); padding:6px 10px; border-radius:999px}
+    .super{display:inline-block; padding:6px 12px; border-radius:999px; background:var(--glass); border:1px solid var(--card-border); font-weight:800; letter-spacing:.2px}
+    .title{font-size:clamp(2rem,6vw,3.5rem); line-height:1.05; letter-spacing:-.02em; margin:14px 0 10px; font-weight:900}
+    .title-gradient{color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.18), 0 10px 24px rgba(0,0,0,.22)}
+    .subtitle{color:rgba(255,255,255,.92); font-size:clamp(1rem,2.6vw,1.2rem); max-width:70ch; text-shadow:0 1px 0 rgba(0,0,0,.18); margin-inline:auto}
+    .badge-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px}
+    .badge{background:var(--glass); border:1px solid var(--card-border); padding:8px 12px; border-radius:999px; font-weight:700; color:var(--text)}
+    .cta{margin-top:22px; display:flex; gap:12px; flex-wrap:wrap}
+    .btn{appearance:none; border:none; cursor:pointer; font-weight:800; letter-spacing:.2px; padding:12px 16px; border-radius:12px; transition:var(--transition); text-decoration:none}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),#46a6cc); color:#fff; box-shadow:var(--shadow-1)}
+    .btn-primary:hover{transform:translateY(-2px) scale(1.01)}
+    .btn-ghost{background:var(--card); color:var(--text); border:1px solid var(--card-border)}
 
     /* ===== Cards & grids ===== */
-    .grid { display:grid; gap:20px; grid-template-columns: repeat(12, 1fr); }
-    .card { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-1); }
-    .card h3 { margin:0 0 10px; font-size: 1.15rem; }
-    .span-4 { grid-column: span 4 }
-    .span-6 { grid-column: span 6 }
-    .span-8 { grid-column: span 8 }
-    .span-12 { grid-column: 1 / -1 }
-    @media (max-width: 900px){ .span-4, .span-6, .span-8 { grid-column: 1 / -1 } }
+    .grid{display:grid; gap:20px; grid-template-columns:repeat(12,1fr)}
+    .card{background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow-1)}
+    .card h3{margin:0 0 10px; font-size:1.15rem}
+    .span-4{grid-column:span 4}
+    .span-6{grid-column:span 6}
+    .span-8{grid-column:span 8}
+    .span-12{grid-column:1 / -1}
+    @media (max-width:900px){ .span-4,.span-6,.span-8{grid-column:1 / -1} }
 
     /* ===== Stats ===== */
-    .stats { display:grid; gap:14px; grid-template-columns: repeat(4,1fr); }
-    @media (max-width: 900px){ .stats { grid-template-columns: 1fr 1fr } }
-    .stat { background: linear-gradient(180deg, color-mix(in oklab, var(--card), transparent 10%), transparent); border:1px solid var(--card-border); border-radius: 14px; padding:16px; }
-    .stat .value { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900 }
-    .stat .label { color: var(--muted); font-weight: 600 }
-    .progress { height: 8px; border-radius: 999px; background: color-mix(in oklab, var(--text), transparent 90%); overflow:hidden; margin-top:8px }
-    .progress > span { display:block; height:100%; width:0; background: linear-gradient(90deg, var(--success), var(--accent)); transition: width 1200ms ease }
+    .stats{display:grid; gap:14px; grid-template-columns:repeat(4,1fr)}
+    @media (max-width:900px){ .stats{grid-template-columns:1fr 1fr} }
+    .stat{background:linear-gradient(180deg,color-mix(in oklab,var(--card),transparent 10%),transparent); border:1px solid var(--card-border); border-radius:14px; padding:16px}
+    .stat .value{font-size:clamp(1.6rem,4vw,2.4rem); font-weight:900}
+    .stat .label{color:var(--muted); font-weight:600}
+    .progress{height:8px; border-radius:999px; background:color-mix(in oklab,var(--text),transparent 90%); overflow:hidden; margin-top:8px}
+    .progress>span{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--success),var(--accent)); transition:width 1200ms ease}
 
     /* ===== Table ===== */
-    table { width:100%; border-collapse: collapse; }
-    thead th { text-align:left; font-size:.9rem; color:var(--muted); border-bottom:1px solid var(--card-border); padding:10px 10px; }
-    tbody td { padding:12px 10px; border-bottom:1px dashed var(--card-border); }
-    tbody tr:hover { background: color-mix(in oklab, var(--card), transparent 30%); }
+    table{width:100%; border-collapse:collapse}
+    thead th{text-align:left; font-size:.9rem; color:var(--muted); border-bottom:1px solid var(--card-border); padding:10px 10px}
+    tbody td{padding:12px 10px; border-bottom:1px dashed var(--card-border)}
+    tbody tr:hover{background:color-mix(in oklab,var(--card),transparent 30%)}
 
     /* ===== Gallery ===== */
-    .gallery { display:grid; gap:16px; grid-template-columns: repeat(12, 1fr); }
-    .tile { position:relative; overflow:hidden; border-radius: 14px; border:1px solid var(--card-border); background: #0a0f22; min-height: 180px; } .tile.broken::before{content:'Image not found';position:absolute;inset:0;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,#0b1020,#131a36);} .tile.broken .overlay{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.7));} .tile img { width:100%; height:100%; object-fit:cover; opacity:1; transition: opacity var(--transition) }
-    .tile img { width:100%; height:100%; object-fit:cover; opacity:1; transition: opacity var(--transition) }
-    .tile.loaded img { opacity:1 }
-    .tile .overlay { position:absolute; inset:auto 0 0 0; padding:14px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.6)); color:#fff }
-    .col-4 { grid-column: span 4 }
-    .col-6 { grid-column: span 6 }
-    .col-12 { grid-column: 1 / -1 }
-    @media (max-width: 900px){ .col-4, .col-6 { grid-column: 1 / -1 } }
+    .gallery{display:grid; gap:16px; grid-template-columns:repeat(12,1fr)}
+    .tile{position:relative; overflow:hidden; border-radius:14px; border:1px solid var(--card-border); background:#0a0f22; min-height:180px}
+    .tile.broken::before{content:'Image not found'; position:absolute; inset:0; display:grid; place-items:center; color:#fff; background:linear-gradient(180deg,#0b1020,#131a36)}
+    .tile.broken .overlay{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.7))}
+    .tile img{width:100%; height:100%; object-fit:cover; opacity:1; transition:opacity var(--transition)}
+    .tile .overlay{position:absolute; inset:auto 0 0 0; padding:14px; background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.6)); color:#fff}
+    .col-4{grid-column:span 4}
+    .col-6{grid-column:span 6}
+    .col-12{grid-column:1 / -1}
+    @media (max-width:900px){ .col-4,.col-6{grid-column:1 / -1} }
 
     /* ===== Chips ===== */
-    .chip { display:inline-flex; align-items:center; gap:8px; background: var(--card); border:1px solid var(--card-border); color: var(--text); padding:6px 10px; border-radius: 999px; font-weight:700 }
+    .chip{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--card-border); color:var(--text); padding:6px 10px; border-radius:999px; font-weight:700}
 
     /* ===== Footer ===== */
-    .footer { border-top:1px solid var(--card-border); background: color-mix(in oklab, var(--surface), transparent 30%); }
+    .footer{border-top:1px solid var(--card-border); background:color-mix(in oklab,var(--surface),transparent 30%)}
 
     /* ===== Motion safety ===== */
-    @media (prefers-reduced-motion: reduce){
-      * { animation: none !important; transition: none !important }
-    }
+    @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important} }
   </style>
 </head>
 <body>
@@ -149,23 +171,52 @@
         <button id="modeToggle" class="btn btn-ghost" aria-pressed="false" title="Toggle theme">🌓 Theme</button>
       </nav>
     </div>
+    <div class="container" style="padding-bottom:10px">
+      <div class="links" aria-label="Quick research links">
+        <a class="link-chip" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">📦 PyPI</a>
+        <a class="link-chip" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">🧪 GitHub</a>
+        <a class="link-chip" href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">🔗 DOI: 10.5281/zenodo.17118217</a>
+        <a class="link-chip" href="https://orcid.org/0009-0008-7911-1171" target="_blank" rel="noopener">🆔 ORCID: 0009-0008-7911-1171</a>
+      </div>
+    </div>
   </header>
+
+  <!-- TRUST BAR -->
+  <section class="trustbar" aria-label="Trust & proof">
+    <div class="container logos">
+      <span>🔗 DOI:</span>
+      <a href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">10.5281/zenodo.17118217</a>
+      <span class="dot">•</span>
+      <span>🆔 ORCID:</span>
+      <a href="https://orcid.org/0009-0008-7911-1171" target="_blank" rel="noopener">0009-0008-7911-1171</a>
+      <span class="dot">•</span>
+      <a href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">📦 PyPI</a>
+      <span class="dot">•</span>
+      <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">🧪 GitHub</a>
+    </div>
+  </section>
 
   <!-- HERO -->
   <section class="hero" id="overview">
+    <div class="ribbon" aria-hidden="true">WORLD-CLASS</div>
     <div class="container">
-      <span class="eyebrow">Energy‑Constrained Autonomic Inference</span>
-      <h1 class="title title-gradient">Decide <em>when</em> to think.<br/>Maximize utility per joule.</h1>
-      <p class="subtitle">Sundew is an energy‑aware gating controller for real‑time AI. It allocates compute only when the expected utility beats the marginal cost—at millisecond latency.</p>
+      <span class="eyebrow super">Energy-Constrained Autonomic Inference</span>
+      <h1 class="title title-gradient">The world’s most <em>energy-efficient</em> AI gating — inspired by nature.</h1>
+      <p class="subtitle">
+        Sundew allocates compute only when expected utility beats marginal cost — delivering
+        up to <b>99.7% energy savings</b> with real-time latency. Research-grade, open-source,
+        DOI-backed.
+      </p>
       <div class="badge-row" role="list">
         <span class="badge" role="listitem">25k+ samples</span>
         <span class="badge" role="listitem">6 configurations</span>
         <span class="badge" role="listitem">5 domains</span>
-        <span class="badge" role="listitem">Research‑grade</span>
-        <span class="badge" role="listitem">Energy‑efficient</span>
+        <span class="badge" role="listitem">Bio-inspired</span>
+        <span class="badge" role="listitem">Energy-efficient</span>
       </div>
       <div class="cta">
-        <a class="btn btn-primary" href="#downloads">Get the SDK & Data</a>
+        <a class="btn btn-primary" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">Install from PyPI</a>
+        <a class="btn btn-ghost" href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">Read the Whitepaper (DOI)</a>
         <a class="btn btn-ghost" href="#results">View Benchmarks</a>
       </div>
     </div>
@@ -177,7 +228,10 @@
       <div class="grid">
         <article class="card span-12">
           <h3>Executive Summary</h3>
-          <p style="color:var(--muted);max-width:70ch">World‑class selective activation demonstrated across five real‑world domains with up to <strong>99.7% energy efficiency</strong> and <strong>11k+ samples/sec</strong> throughput.</p>
+          <p style="color:var(--muted);max-width:70ch">
+            World-class selective activation demonstrated across five real-world domains with up to
+            <strong>99.7% energy efficiency</strong> and <strong>11k+ samples/sec</strong> throughput.
+          </p>
           <div class="stats" style="margin-top:14px">
             <div class="stat" aria-live="polite">
               <div class="value" data-count="89.4">0</div>
@@ -215,11 +269,11 @@
         <article class="card span-6">
           <h3>🎯 Algorithm Innovations</h3>
           <div style="display:grid;gap:8px">
-            <span class="chip">Mutual‑information threshold adaptation</span>
+            <span class="chip">Mutual-information threshold adaptation</span>
             <span class="chip">Vectorized batch processing (2–3×)</span>
             <span class="chip">AutoML HPO integration</span>
-            <span class="chip">Lyapunov‑backed stability</span>
-            <span class="chip">Temporal‑attention significance models</span>
+            <span class="chip">Lyapunov-backed stability</span>
+            <span class="chip">Temporal-attention significance models</span>
             <span class="chip">MPC threshold scheduling</span>
           </div>
         </article>
@@ -296,7 +350,7 @@
               <tr><td>Baseline Linear</td><td>89.0%</td><td>11,236/sec</td><td>0.329</td></tr>
               <tr><td>Enhanced Neural</td><td>99.7%</td><td>5,689/sec</td><td>0.039</td></tr>
               <tr><td>Edge Optimized</td><td>91.3%</td><td>8,565/sec</td><td>0.348</td></tr>
-              <tr><td>Real‑time Optimized</td><td>89.2%</td><td>10,527/sec</td><td>0.339</td></tr>
+              <tr><td>Real-time Optimized</td><td>89.2%</td><td>10,527/sec</td><td>0.339</td></tr>
             </tbody>
           </table>
         </article>
@@ -310,7 +364,7 @@
               <div style="display:flex;justify-content:space-between"><strong>Edge Optimized</strong><strong style="color:var(--success)">7.62 / 10</strong></div>
             </div>
             <div class="card" style="padding:12px;">
-              <div style="display:flex;justify-content:space-between"><strong>Real‑time Optimized</strong><strong style="color:var(--warning)">7.22 / 10</strong></div>
+              <div style="display:flex;justify-content:space-between"><strong>Real-time Optimized</strong><strong style="color:var(--warning)">7.22 / 10</strong></div>
             </div>
             <div class="card" style="padding:12px;">
               <div style="display:flex;justify-content:space-between"><strong>Baseline Linear</strong><strong style="color:var(--primary)">6.93 / 10</strong></div>
@@ -324,13 +378,28 @@
     <section id="visuals" class="section">
       <article class="card">
         <h3>📊 Visualizations</h3>
-        <p style="color:var(--muted)">Drop your plots into the paths below; tiles will auto‑fade when the images load.</p>
+        <p style="color:var(--muted)">Drop your plots into the paths below; tiles auto-mark as missing if not found.</p>
         <div class="gallery" style="margin-top:12px">
-          <div class="tile col-6"><img src="data/Visualizations/research_summary_infographic.png" alt="Research summary infographic" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')"><div class="overlay"><strong>Summary</strong><div>Key findings & breakthroughs</div></div></div>
-          <div class="tile col-6"><img src="data/Visualizations/performance_overview.png" alt="Performance overview charts" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')"><div class="overlay"><strong>Performance</strong><div>Multi‑dimensional metrics</div></div></div>
-          <div class="tile col-4"><img src="data/Visualizations/energy_analysis.png" alt="Energy consumption analysis" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')"><div class="overlay"><strong>Energy</strong><div>Efficiency & consumption</div></div></div>
-          <div class="tile col-4"><img src="data/Visualizations/algorithm_comparison.png" alt="Algorithm comparison" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')"><div class="overlay"><strong>Comparison</strong><div>Head‑to‑head configurations</div></div></div>
-          <div class="tile col-4"><img src="data/Visualizations/dataset_analysis.png" alt="Dataset analysis" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')"><div class="overlay"><strong>Datasets</strong><div>Domain breakdowns</div></div></div>
+          <div class="tile col-6">
+            <img src="data/Visualizations/research_summary_infographic.png" alt="Research summary infographic" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Summary</strong><div>Key findings & breakthroughs</div></div>
+          </div>
+          <div class="tile col-6">
+            <img src="data/Visualizations/performance_overview.png" alt="Performance overview charts" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Performance</strong><div>Multi-dimensional metrics</div></div>
+          </div>
+          <div class="tile col-4">
+            <img src="data/Visualizations/energy_analysis.png" alt="Energy consumption analysis" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Energy</strong><div>Efficiency & consumption</div></div>
+          </div>
+          <div class="tile col-4">
+            <img src="data/Visualizations/algorithm_comparison.png" alt="Algorithm comparison" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Comparison</strong><div>Head-to-head configurations</div></div>
+          </div>
+          <div class="tile col-4">
+            <img src="data/Visualizations/dataset_analysis.png" alt="Dataset analysis" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Datasets</strong><div>Domain breakdowns</div></div>
+          </div>
         </div>
       </article>
     </section>
@@ -338,12 +407,42 @@
     <!-- ALGORITHMS -->
     <section id="algos" class="section">
       <div class="grid">
-        <article class="card span-4"><h3>⚡ Baseline Linear</h3><p><strong>Focus:</strong> Speed & Energy</p><ul><li>Linear significance</li><li>Temp‑based gating</li><li>PI controller</li><li>Simple energy model</li></ul><div style="margin-top:10px" class="chip">HIGH SPEED</div></article>
-        <article class="card span-4"><h3>🧠 Enhanced Neural</h3><p><strong>Focus:</strong> Intelligence</p><ul><li>Neural significance</li><li>Adaptive gating</li><li>Advanced PI</li><li>Realistic energy</li></ul><div style="margin-top:10px" class="chip">HIGH ACCURACY</div></article>
-        <article class="card span-4"><h3>🎯 Edge Optimized</h3><p><strong>Focus:</strong> Resource</p><ul><li>Info‑theoretic thresholds</li><li>Batch optimizations</li><li>Energy‑efficient</li><li>Edge‑ready</li></ul><div style="margin-top:10px" class="chip">EDGE READY</div></article>
-        <article class="card span-4"><h3>☁️ Cloud Optimized</h3><p><strong>Focus:</strong> Features</p><ul><li>Full neural stack</li><li>AutoML</li><li>Theory & proofs</li><li>High throughput</li></ul><div style="margin-top:10px" class="chip">RESEARCH GRADE</div></article>
-        <article class="card span-4"><h3>⚡ Real‑time Optimized</h3><p><strong>Focus:</strong> Latency</p><ul><li>Batch engine</li><li>Speed optimized</li><li>RT constraints</li><li>Streaming ready</li></ul><div style="margin-top:10px" class="chip">REAL‑TIME</div></article>
-        <article class="card span-4"><h3>🔬 Advanced MPC</h3><p><strong>Focus:</strong> Dynamic Control</p><ul><li>MPC</li><li>Dynamic optimization</li><li>Neural + control</li><li>Prototype</li></ul><div style="margin-top:10px" class="chip" style="background:var(--danger)">EXPERIMENTAL</div></article>
+        <article class="card span-4">
+          <h3>⚡ Baseline Linear</h3>
+          <p><strong>Focus:</strong> Speed & Energy</p>
+          <ul><li>Linear significance</li><li>Temp-based gating</li><li>PI controller</li><li>Simple energy model</li></ul>
+          <div class="chip" style="margin-top:10px">HIGH SPEED</div>
+        </article>
+        <article class="card span-4">
+          <h3>🧠 Enhanced Neural</h3>
+          <p><strong>Focus:</strong> Intelligence</p>
+          <ul><li>Neural significance</li><li>Adaptive gating</li><li>Advanced PI</li><li>Realistic energy</li></ul>
+          <div class="chip" style="margin-top:10px">HIGH ACCURACY</div>
+        </article>
+        <article class="card span-4">
+          <h3>🎯 Edge Optimized</h3>
+          <p><strong>Focus:</strong> Resource</p>
+          <ul><li>Info-theoretic thresholds</li><li>Batch optimizations</li><li>Energy-efficient</li><li>Edge-ready</li></ul>
+          <div class="chip" style="margin-top:10px">EDGE READY</div>
+        </article>
+        <article class="card span-4">
+          <h3>☁️ Cloud Optimized</h3>
+          <p><strong>Focus:</strong> Features</p>
+          <ul><li>Full neural stack</li><li>AutoML</li><li>Theory & proofs</li><li>High throughput</li></ul>
+          <div class="chip" style="margin-top:10px">RESEARCH GRADE</div>
+        </article>
+        <article class="card span-4">
+          <h3>⚡ Real-time Optimized</h3>
+          <p><strong>Focus:</strong> Latency</p>
+          <ul><li>Batch engine</li><li>Speed optimized</li><li>RT constraints</li><li>Streaming ready</li></ul>
+          <div class="chip" style="margin-top:10px">REAL-TIME</div>
+        </article>
+        <article class="card span-4">
+          <h3>🔬 Advanced MPC</h3>
+          <p><strong>Focus:</strong> Dynamic Control</p>
+          <ul><li>MPC</li><li>Dynamic optimization</li><li>Neural + control</li><li>Prototype</li></ul>
+          <div class="chip" style="margin-top:10px; background:color-mix(in oklab,var(--danger),transparent 10%); border-color:color-mix(in oklab,var(--danger),transparent 40%)">EXPERIMENTAL</div>
+        </article>
       </div>
     </section>
 
@@ -369,10 +468,19 @@
   <footer class="footer section">
     <div class="container" style="text-align:center">
       <h3 style="margin:0 0 8px">Sundew Algorithm Research Project</h3>
-      <p style="color:var(--muted);max-width:68ch;margin-inline:auto">Bio‑inspired selective activation for energy‑efficient edge AI. Multi‑domain validation. Production‑ready.</p>
+      <p style="color:var(--muted);max-width:68ch;margin-inline:auto">
+        Bio-inspired selective activation for energy-efficient edge AI.
+        Validated across domains. Open source with DOI and ORCID.
+      </p>
       <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
-        <span class="chip">World‑Class Quality</span>
-        <span class="chip">Multi‑Domain Validated</span>
+        <span class="chip">World-Class Quality</span>
+        <span class="chip">Multi-Domain Validated</span>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+        <a class="link-chip" href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">🔗 DOI</a>
+        <a class="link-chip" href="https://orcid.org/0009-0008-7911-1171" target="_blank" rel="noopener">🆔 ORCID</a>
+        <a class="link-chip" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">🧪 GitHub</a>
+        <a class="link-chip" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">📦 PyPI</a>
       </div>
       <button id="toTop" class="btn btn-ghost" style="margin-top:16px">↑ Back to top</button>
     </div>
@@ -382,7 +490,6 @@
     // Active link highlighting on scroll
     const sections = [...document.querySelectorAll('main section, .hero')];
     const navLinks = [...document.querySelectorAll('.nav a[href^="#"]')];
-    const map = new Map(sections.map(s => [s.id || 'overview', s]));
     const io = new IntersectionObserver((entries)=>{
       const visible = entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
       if(!visible) return;
@@ -390,7 +497,7 @@
       navLinks.forEach(a=>a.removeAttribute('aria-current'));
       const match = document.querySelector('.nav a[href="#'+id+'"]');
       if(match) match.setAttribute('aria-current','page');
-    }, { threshold:[0.4, 0.6], rootMargin:'-20% 0px -60% 0px' });
+    }, { threshold:[0.4,0.6], rootMargin:'-20% 0px -60% 0px' });
     sections.forEach(s=>io.observe(s));
 
     // Theme toggle
@@ -399,7 +506,7 @@
     const initTheme = localStorage.getItem('sundew-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light':'dark');
     setTheme(initTheme);
     modeToggle.setAttribute('aria-pressed', initTheme==='light');
-    modeToggle.addEventListener('click',()=>{
+    modeToggle.addEventListener('click', ()=>{
       const to = document.body.classList.contains('theme-light') ? 'dark' : 'light';
       setTheme(to); modeToggle.setAttribute('aria-pressed', to==='light');
     });
@@ -418,13 +525,14 @@
     const bars = document.querySelectorAll('.progress > span');
     const animate = (el, to, dur=900)=>{
       const t0 = performance.now();
-      const from = 0; const isFloat = String(to).includes('.')
+      const from = 0; const isFloat = String(to).includes('.');
       const step = (t)=>{
         const p = Math.min(1, (t - t0)/dur);
         const val = from + (to - from)*p;
         el.textContent = isFloat ? val.toFixed(3) : Math.round(val);
         if(p<1) requestAnimationFrame(step);
-      }; requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
     };
     const kpiIO = new IntersectionObserver((ents)=>{
       ents.forEach(en=>{
@@ -437,19 +545,24 @@
     }, { threshold:.35 });
     kpiIO.observe(document.getElementById('kpis'));
 
-    // Image fade-in when loaded
+    // Image present/absent handling
     document.querySelectorAll('.tile img').forEach(img=>{
+      if(img.complete && img.naturalWidth === 0){
+        img.style.display = 'none';
+        img.parentElement.classList.add('broken');
+      }
       img.addEventListener('load', ()=> img.parentElement.classList.add('loaded'));
     });
-      // --- GH Pages base-path fixer (works for user or project sites) ---
+
+    // --- GH Pages base-path fixer (works for user OR project sites) ---
     (function(){
       const parts = location.pathname.split('/').filter(Boolean);
       const base = parts.length > 0 ? ('/' + parts[0] + '/') : '/';
-      document.querySelectorAll('img[src^="/"], a[href^="/"]').forEach(el => {
+      document.querySelectorAll('img[src^="/"], a[href^="/"]').forEach(el=>{
         const attr = el.tagName === 'IMG' ? 'src' : 'href';
         const url = el.getAttribute(attr);
-        if (!url) return;
-        el.setAttribute(attr, base + url.replace(/^\//, ''));
+        if(!url) return;
+        el.setAttribute(attr, base + url.replace(/^\//,''));
       });
     })();
   </script>
